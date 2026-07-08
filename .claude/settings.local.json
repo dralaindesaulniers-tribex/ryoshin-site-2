@@ -21,7 +21,9 @@
       "Bash(cp /Users/alaindesaulniers/Downloads/RYOSHIN_BUILD_SPEC.md ./RYOSHIN_BUILD_SPEC.md)",
       "Bash(cp \"/Users/alaindesaulniers/Downloads/ryoshin-network-background_1.html\" reference/ryoshin-network-background.html)",
       "Bash(git add *)",
-      "Bash(git commit -q -m 'step-0: archive v1 static site, add build spec + network prototype reference *)"
+      "Bash(git commit -q -m 'step-0: archive v1 static site, add build spec + network prototype reference *)",
+      "Bash(npx --yes create-next-app@15 webtmp --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm)",
+      "Bash(CI=1 npx --yes create-next-app@15 webtmp --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --use-npm --turbopack)"
     ]
   }
 }

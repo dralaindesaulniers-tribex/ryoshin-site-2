@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ============================================
+   RYŌSHIN design tokens — LOCKED per spec 2.1
+   No arbitrary values outside these tokens.
+   ============================================ */
+@theme {
+  --color-ink: #101112;
+  --color-ink-soft: #1a1b1d;
+  --color-paper: #f4f1ea;
+  --color-paper-soft: #edeae4;
+  --color-shu: #c43a2f;
+  --color-shu-deep: #9e2b25;
+  --color-gold: #d9a441;
+  --color-indigo: #6b87a8; /* network + data viz only, never UI chrome */
+  --color-sage: #7fa08c; /* network only */
+  --color-line-dark: rgba(244, 241, 234, 0.14); /* hairlines on dark */
+  --color-line-light: rgba(16, 17, 18, 0.12); /* hairlines on light */
+
+  --font-display: var(--font-display), "Zodiak", Georgia, serif;
+  --font-body: var(--font-body), "General Sans", "Helvetica Neue", sans-serif;
+  --font-jp: var(--font-jp), "Noto Serif JP", serif;
+
+  /* fluid type scale — body min 17px mobile / 18px desktop (Ryan: bigger) */
+  --text-body: clamp(1.0625rem, 1rem + 0.3vw, 1.125rem);
+  --text-body-lg: clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem);
+  --text-eyebrow: 0.8125rem;
+  --text-display: clamp(2.6rem, 7vw, 6rem);
+  --text-display-sm: clamp(2rem, 4.5vw, 3.75rem);
+  --text-display-xs: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* base */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.7;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-shu);
+  color: var(--color-paper);
+}
+
+/* ============================================
+   Recurring primitives
+   ============================================ */
+
+/* eyebrow label — spec 2.2 */
+.eyebrow {
+  font-size: var(--text-eyebrow);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* display headline — spec 2.2 */
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+/* section rhythm — spec 2.3: let it breathe */
+.section-pad {
+  padding-top: clamp(96px, 14vh, 180px);
+  padding-bottom: clamp(96px, 14vh, 180px);
+}
+
+/* link underline draws in from left — spec 2.4 */
+.link-draw {
+  position: relative;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-draw:hover::after,
+.link-draw:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* motion pre-states (GSAP takes over; reduced-motion collapses to fades) */
+@media (prefers-reduced-motion: no-preference) {
+  .will-reveal {
+    opacity: 0;
+  }
+}
+
+/* half-sun layer never blocks interaction */
+.sun-layer {
+  pointer-events: none;
+}
