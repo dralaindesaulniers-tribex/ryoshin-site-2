@@ -1,19 +1,23 @@
-import { hero } from "@/content/site";
+import Hero from "@/components/home/Hero";
+import TrustedBy from "@/components/home/TrustedBy";
+import PartnersClients from "@/components/home/PartnersClients";
+import Audiences from "@/components/home/Audiences";
+import StatsBand from "@/components/home/StatsBand";
+import Testimonials from "@/components/home/Testimonials";
+import AiProjects from "@/components/home/AiProjects";
+import FooterCta from "@/components/FooterCta";
 
-// Temporary scaffold-verification page. Replaced in build-order step 3.
 export default function Home() {
   return (
-    <main className="bg-ink text-paper flex min-h-svh flex-col items-center justify-center gap-6 px-6">
-      <p className="eyebrow text-paper/60">Scaffold check</p>
-      <h1 className="display text-center" style={{ fontSize: "var(--text-display)" }}>
-        {hero.line1Pre} <span className="text-shu">{hero.line1Accent}</span>
-      </h1>
-      <p className="display text-paper/55" style={{ fontSize: "var(--text-display-sm)" }}>
-        {hero.line2}
-      </p>
-      <p className="font-jp text-shu text-3xl" lang="ja">
-        良心 · 両親
-      </p>
+    <main>
+      <Hero />
+      <TrustedBy />
+      <PartnersClients />
+      <Audiences />
+      <StatsBand />
+      <Testimonials />
+      <AiProjects />
+      <FooterCta />
     </main>
   );
 }

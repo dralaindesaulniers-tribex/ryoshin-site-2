@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================
-   RYŌSHIN design tokens — LOCKED per spec 2.1
+   RYŌSHIN design tokens, LOCKED per spec 2.1
    No arbitrary values outside these tokens.
    ============================================ */
 @theme {
@@ -21,7 +21,7 @@
   --font-body: var(--font-body), "General Sans", "Helvetica Neue", sans-serif;
   --font-jp: var(--font-jp), "Noto Serif JP", serif;
 
-  /* fluid type scale — body min 17px mobile / 18px desktop (Ryan: bigger) */
+  /* fluid type scale, body min 17px mobile / 18px desktop (Ryan: bigger) */
   --text-body: clamp(1.0625rem, 1rem + 0.3vw, 1.125rem);
   --text-body-lg: clamp(1.1875rem, 1.1rem + 0.4vw, 1.3125rem);
   --text-eyebrow: 0.8125rem;
@@ -54,7 +54,7 @@ body {
    Recurring primitives
    ============================================ */
 
-/* eyebrow label — spec 2.2 */
+/* eyebrow label, spec 2.2 */
 .eyebrow {
   font-size: var(--text-eyebrow);
   font-weight: 500;
@@ -62,7 +62,7 @@ body {
   text-transform: uppercase;
 }
 
-/* display headline — spec 2.2 */
+/* display headline, spec 2.2 */
 .display {
   font-family: var(--font-display);
   font-weight: 500;
@@ -70,13 +70,13 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* section rhythm — spec 2.3: let it breathe */
+/* section rhythm, spec 2.3: let it breathe */
 .section-pad {
   padding-top: clamp(96px, 14vh, 180px);
   padding-bottom: clamp(96px, 14vh, 180px);
 }
 
-/* link underline draws in from left — spec 2.4 */
+/* link underline draws in from left, spec 2.4 */
 .link-draw {
   position: relative;
 }
