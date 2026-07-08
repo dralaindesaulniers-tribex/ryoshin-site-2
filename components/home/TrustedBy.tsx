@@ -10,7 +10,7 @@ export default function TrustedBy() {
     <section className="bg-paper border-b border-(--color-line-light) py-16 md:py-20">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         <p className="eyebrow text-shu mb-12 text-center">{trustedBy.label}</p>
-        <ul className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10">
+        <ul data-stagger-children className="flex flex-wrap items-center justify-center gap-x-14 gap-y-10">
           {trustedBy.logos.map((logo) => (
             <li key={logo.name} className="flex items-center">
               {logo.src ? (

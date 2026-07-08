@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ChatInput from "@/components/ChatInput";
 import FooterCta from "@/components/FooterCta";
+import HalfSun from "@/components/HalfSun";
 import { about, brand } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -16,19 +17,26 @@ export default function AboutPage() {
     <main>
       {/* ============ HERO: heading centered, headline split to two lines
           with visual space (Ryan punch list) ============ */}
-      <section className="bg-ink text-paper flex min-h-svh flex-col items-center justify-center px-6 pt-28 pb-16 text-center md:px-10">
+      <section className="bg-ink text-paper relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 text-center md:px-10">
+        <HalfSun />
+        <div className="relative z-10 flex w-full flex-col items-center">
         <p className="eyebrow text-paper/50">About Us</p>
         <h1 className="display mt-10" style={{ fontSize: "clamp(2.2rem, 4.6vw, 4.25rem)" }}>
-          <span data-reveal-line className="block">
-            {about.heroLine1}
+          <span className="block overflow-hidden">
+            <span data-reveal-line className="block">
+              {about.heroLine1}
+            </span>
           </span>
-          <span data-reveal-line className="text-paper/55 mt-6 block md:mt-8">
-            {about.heroLine2}
+          <span className="mt-6 block overflow-hidden md:mt-8">
+            <span data-reveal-line className="text-paper/55 block">
+              {about.heroLine2}
+            </span>
           </span>
         </h1>
         <p className="text-paper/45 mt-8">{about.heroAttribution}</p>
         <div className="mt-14 flex w-full justify-center">
           <ChatInput />
+        </div>
         </div>
       </section>
 
@@ -67,7 +75,7 @@ export default function AboutPage() {
               aria-hidden="true"
               className="border-shu absolute inset-0 translate-x-3 translate-y-3 rounded-[2px] border-4"
             />
-            <div className="relative overflow-hidden rounded-[2px]">
+            <div data-clip-reveal className="relative overflow-hidden rounded-[2px]">
               <Image
                 data-depth-photo
                 src={about.founder.photo}
@@ -112,6 +120,7 @@ export default function AboutPage() {
       <section className="bg-ink text-paper section-pad relative overflow-hidden">
         {/* backdrop kanji art, decorative */}
         <span
+          data-parallax
           aria-hidden="true"
           lang="ja"
           className="font-jp text-shu/8 pointer-events-none absolute -top-10 -right-8 leading-none font-light select-none"

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { zodiak, generalSans, notoSerifJP } from "./fonts";
 import SmoothScroll from "@/components/SmoothScroll";
+import MotionEffects from "@/components/MotionEffects";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import "./globals.css";
@@ -26,6 +27,7 @@ export default function RootLayout({
         className={`${zodiak.variable} ${generalSans.variable} ${notoSerifJP.variable} antialiased`}
       >
         <SmoothScroll />
+        <MotionEffects />
         <Nav />
         {children}
         <Footer />
