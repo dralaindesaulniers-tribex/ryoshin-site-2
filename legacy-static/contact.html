@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — RYŌSHIN Solutions</title>
+  <meta name="description" content="Have a business inquiry or question? We'd love to hear from you.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="site-header scrolled">
+    <div class="container">
+      <nav class="nav-inner">
+        <a class="nav-logo" href="index.html">
+          <img src="images/RyoshinSolutions_Logo_White_Final.ai-1600-x-600-px.png" alt="RYŌSHIN Solutions">
+        </a>
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+        <ul class="nav-links">
+          <li><a href="about-us.html">About Us</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===================== HERO ===================== -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="label reveal" style="color: rgba(255,255,255,0.3); margin-bottom: 2rem;">Contact</p>
+        <h1 class="reveal reveal-delay-1" style="font-size: clamp(2.4rem, 5vw, 4rem); font-style: italic; font-weight: 300;">How can we help?</h1>
+        <p class="reveal reveal-delay-2" style="color: rgba(255,255,255,0.5); max-width: 48ch; margin: 1rem auto 0; font-size: 1rem; line-height: 1.7;">If you have a business inquiry or any questions about RYŌSHIN Solutions, we'd love to hear from you.</p>
+        <div class="ai-chat-placeholder reveal reveal-delay-3" style="margin-top: 2.5rem; max-width: 580px; margin-inline: auto;">
+          <div class="ai-chat-box">
+            <input type="text" placeholder="How can we help you?" disabled aria-label="AI concierge — coming soon">
+            <button class="ai-chat-submit" disabled aria-label="Submit">
+              <svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <p class="ai-chat-label">AI-powered guidance — coming soon</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT SECTION ===================== -->
+    <section class="section contact-section">
+      <div class="container">
+        <div class="contact-inner">
+
+          <!-- Details -->
+          <div>
+            <h2 class="reveal" style="margin-bottom: 2rem;">Get In Touch</h2>
+
+            <div class="contact-detail-item reveal reveal-delay-1">
+              <span class="detail-label">Address</span>
+              <p>242 – 1489 Marine Drive<br>West Vancouver, BC V7T 1B8<br>Canada</p>
+            </div>
+
+            <div class="contact-detail-item reveal reveal-delay-2">
+              <span class="detail-label">Phone</span>
+              <a href="tel:7789913747">778-991-3747</a>
+            </div>
+
+            <div class="contact-detail-item reveal reveal-delay-3">
+              <span class="detail-label">Email</span>
+              <a href="mailto:hello@ryoshin.ca">hello@ryoshin.ca</a>
+            </div>
+
+            <!-- Testimonial -->
+            <div class="contact-testimonial reveal">
+              <p style="font-family: var(--font-serif); font-size: 1.05rem; font-style: italic; line-height: 1.7; color: var(--ink);">"Working with Ryan was a rewarding time in my professional career. It has been inspiring to watch Ryan create his team of talented people and create solutions for many business problems. His ability to help people work through complex issues, be a leader of organizational change, and challenge the status quo are second to none."</p>
+              <p style="margin-top: 1rem; font-size: 0.82rem; color: var(--ash); letter-spacing: 0.06em;">— Alex G.</p>
+            </div>
+          </div>
+
+          <!-- Form -->
+          <!-- Form submits to Formspree — replace ACTION_URL with real Formspree endpoint when wiring up -->
+          <form
+            class="contact-form reveal reveal--right"
+            action="https://formspree.io/f/ACTION_URL"
+            method="POST"
+          >
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required placeholder="Your full name">
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required placeholder="your@email.com">
+            </div>
+
+            <div class="form-group">
+              <label for="inquiry">How Can RYŌSHIN Solutions Help You?</label>
+              <select id="inquiry" name="inquiry" required>
+                <option value="" disabled selected>Select an option</option>
+                <option>Leadership / Organizational Consulting</option>
+                <option>Technology &amp; Innovation Solutions</option>
+                <option>Community Development Partnership</option>
+                <option>Project Collaboration Opportunity</option>
+                <option>Media / Interview Request</option>
+                <option>Speaking Request</option>
+                <option>General Inquiry</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" maxlength="350" required placeholder="Tell us what you're working on…"></textarea>
+              <span class="char-count" id="char-count">0 / 350</span>
+            </div>
+
+            <!-- Hidden field routes to ryan@ryoshin.ca via Formspree -->
+            <input type="hidden" name="_replyto" value="ryan@ryoshin.ca">
+
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Send Message</button>
+          </form>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col footer-logo">
+          <img src="images/RyoshinSolutions_Logo_White_Final.ai-1600-x-600-px.png" alt="RYŌSHIN Solutions">
+          <p>Good-Hearted Solutions.<br>Real-World Results.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about-us.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms &amp; Conditions</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <address class="footer-address" style="font-style: normal;">
+            242 – 1489 Marine Drive<br>
+            West Vancouver, BC V7T 1B8<br>
+            Canada
+          </address>
+          <p style="margin-top: 0.75rem;"><a href="tel:7789913747">778-991-3747</a></p>
+          <p><a href="mailto:hello@ryoshin.ca">hello@ryoshin.ca</a></p>
+          <div class="footer-socials">
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="Instagram">&#9651;</a>
+            <a href="#" aria-label="Facebook">f</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Copyright &copy; 2026 RYŌSHIN Solutions, all rights reserved.</span>
+        <span><a href="privacy.html" style="color: inherit;">Privacy</a> &nbsp;&middot;&nbsp; <a href="terms.html" style="color: inherit;">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

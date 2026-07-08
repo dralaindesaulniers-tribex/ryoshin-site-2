@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RYŌSHIN — Living Network Background v2</title>
+<style>
+  :root {
+    --ink: #101112;
+    --paper: #EDEAE4;
+    --shu: #C43A2F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--ink);
+    overflow: hidden;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  }
+
+  #net { position: fixed; inset: 0; display: block; }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    padding: 24px;
+    text-align: center;
+  }
+  .overlay.visible { opacity: 1; }
+
+  .overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 45% at 50% 50%, rgba(16, 17, 18, 0.6) 0%, rgba(16, 17, 18, 0) 70%);
+    z-index: -1;
+  }
+
+  .overlay h1, .overlay .kanji {
+    text-shadow: 0 1px 4px rgba(16, 17, 18, 0.9), 0 0 30px rgba(16, 17, 18, 0.7);
+  }
+
+  .overlay .kanji {
+    color: var(--paper);
+    opacity: 0.35;
+    font-size: 15px;
+    letter-spacing: 0.6em;
+    margin-bottom: -10px;
+  }
+
+  .overlay h1 {
+    color: var(--paper);
+    font-weight: 300;
+    font-size: clamp(28px, 4.5vw, 52px);
+    letter-spacing: 0.28em;
+    text-indent: 0.28em;
+  }
+
+  .overlay p {
+    color: var(--paper);
+    opacity: 0.92;
+    font-weight: 300;
+    font-size: clamp(14px, 1.4vw, 17px);
+    letter-spacing: 0.06em;
+    max-width: 520px;
+    line-height: 1.7;
+    text-shadow: 0 1px 4px rgba(16, 17, 18, 0.9), 0 0 24px rgba(16, 17, 18, 0.8);
+  }
+
+  .chatbox {
+    margin-top: 12px;
+    width: min(560px, 88vw);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(16, 17, 18, 0.55);
+    border: 1px solid rgba(237, 234, 228, 0.18);
+    border-radius: 14px;
+    padding: 18px 22px;
+    backdrop-filter: blur(6px);
+  }
+  .chatbox span {
+    color: var(--paper);
+    opacity: 0.45;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+  }
+  .chatbox .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--shu);
+    flex: none;
+    animation: breathe 3.2s ease-in-out infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.25); }
+  }
+
+  .toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 10;
+    background: transparent;
+    border: 1px solid rgba(237, 234, 228, 0.25);
+    color: var(--paper);
+    opacity: 0.7;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: opacity 0.3s, border-color 0.3s;
+    font-family: inherit;
+  }
+  .toggle:hover { opacity: 1; border-color: rgba(237, 234, 228, 0.5); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chatbox .dot { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="net"></canvas>
+
+<div class="overlay visible" id="overlay">
+  <div class="kanji">良 心</div>
+  <h1>RYŌSHIN</h1>
+  <p>Strategy, technology, and community — connected by good heart.</p>
+  <div class="chatbox">
+    <div class="dot"></div>
+    <span>How can we help you?</span>
+  </div>
+</div>
+
+<button class="toggle" id="toggleBtn">Hide homepage overlay</button>
+
+<script>
+(() => {
+  const canvas = document.getElementById('net');
+  const ctx = canvas.getContext('2d');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Palette — Japanese-leaning shades on charcoal
+  const PAPER  = [237, 234, 228];  // warm off-white
+  const SHU    = [196, 58, 47];    // vermilion (RYŌSHIN core)
+  const GOLD   = [217, 164, 65];   // kin / gold
+  const INDIGO = [107, 135, 168];  // ai / soft indigo
+  const SAGE   = [127, 160, 140];  // muted green
+
+  const COLORS = [PAPER, SHU, GOLD, INDIGO, SAGE];
+
+  function pickColor() {
+    const r = Math.random();
+    if (r < 0.42) return PAPER;
+    if (r < 0.62) return SHU;
+    if (r < 0.78) return GOLD;
+    if (r < 0.90) return INDIGO;
+    return SAGE;
+  }
+
+  let W, H, DPR, nodes = [], edges = [], pulses = [];
+  const mouse = { x: -9999, y: -9999 };
+
+  const labels = [
+    'Strategy', 'Technology', 'Community',
+    'People', 'Ideas', 'Projects', 'Places', 'Culture', 'AI'
+  ];
+
+  function rand(a, b) { return a + Math.random() * (b - a); }
+
+  function build() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    nodes = [];
+    edges = [];
+    pulses = [];
+
+    const isMobile = W < 700;
+    const count = isMobile ? 70 : 130;
+    const cx = W / 2, cy = H / 2;
+
+    // Center node: RYŌSHIN — the red orb
+    nodes.push({
+      x: cx, y: cy, bx: cx, by: cy,
+      r: isMobile ? 7 : 9,
+      center: true,
+      color: SHU,
+      phase: Math.random() * Math.PI * 2,
+      driftA: 0, driftS: 0,
+      label: null
+    });
+
+    // Satellites — density biased toward the center
+    let labelIdx = 0;
+    for (let i = 1; i < count; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const t = Math.pow(Math.random(), 1.45); // heavy center bias
+      const maxR = Math.min(W, H) * 0.68;
+      const rad = 70 + t * maxR;
+      const x = cx + Math.cos(ang) * rad * (W / Math.min(W, H)) * 0.75;
+      const y = cy + Math.sin(ang) * rad * 0.88;
+      const big = Math.random() < 0.16;
+      // Labels only live outside the center zone so nothing crowds the RYŌSHIN mark
+      const distFromCenter = Math.hypot(x - cx, y - cy);
+      const labelSafe = distFromCenter > Math.min(W, H) * 0.32;
+      nodes.push({
+        x, y, bx: x, by: y,
+        r: big ? rand(3, 4.6) : rand(1.2, 2.6),
+        center: false,
+        color: pickColor(),
+        phase: Math.random() * Math.PI * 2,
+        driftA: rand(4, 14),
+        driftS: rand(0.00012, 0.0004),
+        label: (big && labelSafe && labelIdx < labels.length && Math.random() < 0.85) ? labels[labelIdx++] : null
+      });
+    }
+
+    // Edges: nearby connections + guaranteed spokes from center
+    const maxDist = isMobile ? 125 : 160;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].bx - nodes[j].bx;
+        const dy = nodes[i].by - nodes[j].by;
+        const d = Math.hypot(dx, dy);
+        if (d < maxDist && Math.random() < 0.5) {
+          edges.push([i, j, d]);
+        }
+      }
+    }
+    nodes.forEach((n, i) => {
+      if (i !== 0 && n.r > 2.8) edges.push([0, i, Math.hypot(n.bx - nodes[0].bx, n.by - nodes[0].by)]);
+    });
+  }
+
+  function spawnPulse() {
+    if (!edges.length) return;
+    let edge = edges[(Math.random() * edges.length) | 0];
+    if (Math.random() < 0.4) {
+      const centerEdges = edges.filter(ed => ed[0] === 0 || ed[1] === 0);
+      if (centerEdges.length) edge = centerEdges[(Math.random() * centerEdges.length) | 0];
+    }
+    // Pulse takes the color of its destination node (paper stays common)
+    const r = Math.random();
+    let color = PAPER;
+    if (r < 0.30) color = SHU;
+    else if (r < 0.45) color = GOLD;
+    else if (r < 0.55) color = INDIGO;
+    pulses.push({
+      edge,
+      t: 0,
+      speed: rand(0.0018, 0.0042),
+      flip: Math.random() < 0.5,
+      color
+    });
+  }
+
+  function nodePos(n, time) {
+    const dx = Math.cos(time * n.driftS + n.phase) * n.driftA;
+    const dy = Math.sin(time * n.driftS * 1.3 + n.phase) * n.driftA;
+    let x = n.bx + dx, y = n.by + dy;
+    const mdx = x - mouse.x, mdy = y - mouse.y;
+    const md = Math.hypot(mdx, mdy);
+    if (md < 180 && md > 0.001) {
+      const push = (1 - md / 180) * 14;
+      x += (mdx / md) * push;
+      y += (mdy / md) * push;
+    }
+    return [x, y];
+  }
+
+  let lastPulse = 0;
+
+  function frame(time) {
+    ctx.clearRect(0, 0, W, H);
+    const pos = nodes.map(n => nodePos(n, time));
+
+    // edges
+    ctx.lineWidth = 0.6;
+    for (const [a, b, d] of edges) {
+      const [ax, ay] = pos[a];
+      const [bx, by] = pos[b];
+      const fade = Math.max(0, 1 - d / 240);
+      ctx.strokeStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${0.05 + fade * 0.07})`;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+    }
+
+    // pulses
+    for (let i = pulses.length - 1; i >= 0; i--) {
+      const p = pulses[i];
+      p.t += p.speed * (reduceMotion ? 0 : 16);
+      if (p.t >= 1) { pulses.splice(i, 1); continue; }
+      const [a, b] = p.edge;
+      const [ax, ay] = pos[p.flip ? b : a];
+      const [bx, by] = pos[p.flip ? a : b];
+      const x = ax + (bx - ax) * p.t;
+      const y = ay + (by - ay) * p.t;
+      const alpha = Math.sin(p.t * Math.PI);
+      const c = p.color;
+
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, 11);
+      glow.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.6 * alpha})`);
+      glow.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(x, y, 11, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.95 * alpha})`;
+      ctx.beginPath();
+      ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // nodes
+    for (let i = 0; i < nodes.length; i++) {
+      const n = nodes[i];
+      const [x, y] = pos[i];
+      const flicker = 0.72 + 0.28 * Math.sin(time * 0.001 + n.phase * 3);
+      const c = n.color;
+
+      if (n.center) {
+        // RYŌSHIN — the glowing red orb, breathing slowly
+        const breathe = 0.85 + 0.15 * Math.sin(time * 0.0009);
+        const g = ctx.createRadialGradient(x, y, 0, x, y, 95 * breathe);
+        g.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.5)`);
+        g.addColorStop(0.35, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.16)`);
+        g.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(x, y, 95 * breathe, 0, Math.PI * 2);
+        ctx.fill();
+
+        // inner core: hot center fading to vermilion rim
+        const core = ctx.createRadialGradient(x, y, 0, x, y, n.r * 1.6);
+        core.addColorStop(0, 'rgba(255, 214, 200, 0.98)');
+        core.addColorStop(0.5, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.95)`);
+        core.addColorStop(1, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0)`);
+        ctx.fillStyle = core;
+        ctx.beginPath();
+        ctx.arc(x, y, n.r * 1.6, 0, Math.PI * 2);
+        ctx.fill();
+
+        // the half red circle — RYŌSHIN mark, rotating very slowly around the core
+        const ringR = n.r * 3.4;
+        const rot = time * 0.00012; // one full turn ≈ 52 seconds
+        ctx.strokeStyle = `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.85)`;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.shadowColor = `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.7)`;
+        ctx.shadowBlur = 10;
+        ctx.beginPath();
+        ctx.arc(x, y, ringR, rot, rot + Math.PI);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+      } else {
+        // glow halo for every node — stronger on bigger ones
+        const haloR = n.r * (n.r > 2.8 ? 6 : 4.5);
+        const halo = ctx.createRadialGradient(x, y, 0, x, y, haloR);
+        halo.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.22 * flicker})`);
+        halo.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(x, y, haloR, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${(0.4 + n.r * 0.13) * flicker})`;
+        ctx.beginPath();
+        ctx.arc(x, y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      if (n.label) {
+        ctx.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0.3)`;
+        ctx.font = '300 11px "Helvetica Neue", Helvetica, Arial, sans-serif';
+        ctx.letterSpacing = '2px';
+        ctx.fillText(n.label.toUpperCase(), x + 11, y + 4);
+      }
+    }
+
+    // spawn pulses — a touch livelier than v1
+    if (!reduceMotion && time - lastPulse > rand(180, 520) && pulses.length < 20) {
+      spawnPulse();
+      lastPulse = time;
+    }
+
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', build);
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+  window.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+  build();
+  if (reduceMotion) {
+    frame(0);
+  } else {
+    requestAnimationFrame(frame);
+  }
+
+  const overlay = document.getElementById('overlay');
+  const btn = document.getElementById('toggleBtn');
+  btn.addEventListener('click', () => {
+    overlay.classList.toggle('visible');
+    btn.textContent = overlay.classList.contains('visible')
+      ? 'Hide homepage overlay'
+      : 'Show homepage overlay';
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx --version)",
+      "Bash(which node; which python; which ruby; ls /usr/local/bin/ | grep -E \"serve|http|caddy|nginx\" 2>/dev/null | head)",
+      "Bash(ruby -e \"require 'webrick'; s = WEBrick::HTTPServer.new\\(Port: 3456, DocumentRoot: '/Users/alaindesaulniers/Documents/ryoshin-website'\\); trap\\('INT'\\){s.shutdown}; s.start\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3456/)",
+      "Bash(kill 23358)",
+      "Bash(ls /usr/bin/python* 2>/dev/null; ls /usr/local/bin/ 2>/dev/null | head -20; which php; which perl)",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget",
+      "Bash(cat > *)",
+      "mcp__Control_Chrome__open_url",
+      "mcp__Claude_in_Chrome__navigate",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/alaindesaulniers/Documents/ryoshin-website/images/047-20201211-8109-scaled.jpg /Users/alaindesaulniers/Documents/ryoshin-website/images/1-1.png)",
+      "Bash(echo \"=== images folder ===\"; ls /Users/alaindesaulniers/Documents/ryoshin-website/images/ *)",
+      "Bash(echo \"=== searching for network prototype ===\"; find ~/Downloads ~/Documents ~/Desktop -maxdepth 3 -iname \"*network*\" \\\\\\( -iname \"*.html\" -o -iname \"*.zip\" \\\\\\) 2>/dev/null | head -10 *)",
+      "Bash(sips -g pixelWidth -g pixelHeight /Users/alaindesaulniers/Documents/ryoshin-website/images/047-20201211-8109-scaled.jpg /Users/alaindesaulniers/Documents/ryoshin-website/images/1-1.png /Users/alaindesaulniers/Documents/ryoshin-website/images/RyoshinSolutions_Logo_White_Final.ai-1600-x-600-px.png)",
+      "Bash(git init *)",
+      "Bash(cp /Users/alaindesaulniers/Downloads/RYOSHIN_BUILD_SPEC.md ./RYOSHIN_BUILD_SPEC.md)",
+      "Bash(cp \"/Users/alaindesaulniers/Downloads/ryoshin-network-background_1.html\" reference/ryoshin-network-background.html)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'step-0: archive v1 static site, add build spec + network prototype reference *)"
+    ]
+  }
+}
