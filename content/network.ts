@@ -99,4 +99,20 @@ export const networkCategories = [
   "Ideas",
   "Projects",
   "Places",
+  "Culture",
+  "AI",
+];
+
+// Value words (per Alain, July 2026): rendered extra faded in the hero
+// network so they whisper rather than compete with the categories.
+export const networkValues = [
+  "Integrity",
+  "Compassion",
+  "Passion",
+  "Mission",
+  "Inspiration",
+  "Fundamentalism",
+  "Love",
+  "Kindness",
+  "Family",
 ];

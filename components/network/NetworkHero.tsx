@@ -1,59 +1,49 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
 import NetworkCanvas from "./NetworkCanvas";
 
 /**
- * Hero network mount (spec 7). Zero LCP impact: nothing renders until after
- * hydration + requestIdleCallback, then fades in over 1.5s. The hero already
- * looks intentional (charcoal + headline) in the moment before it appears.
+ * Hero network mount (spec 7, revised July 2026 per Alain). The approved
+ * prototype canvas (ryoshin-neural-background.netlify.app) is the hero on
+ * every device: mouse repulsion, organic pulses, full-viewport scatter.
+ * The R3F scene is retired from the home page, which also drops three.js
+ * from the bundle entirely.
  *
- * Capability routing (spec 7.3):
- *   - feature flag NEXT_PUBLIC_NETWORK, default ON, off = nothing renders
- *   - reduced-motion, mobile, or low-end (hardwareConcurrency <= 4) => 2D canvas
- *   - capable desktop => lazy-loaded R3F 3D scene (code-split, ships zero bytes
- *     until this decides to load it)
+ * Zero LCP impact: nothing renders until after hydration +
+ * requestIdleCallback, then fades in over 1.5s. The hero already looks
+ * intentional (charcoal + headline) in the moment before it appears.
+ * Feature flag NEXT_PUBLIC_NETWORK, default ON, off = nothing renders.
+ * Reduced motion renders a single static frame (handled inside the canvas).
  */
-
-const NetworkScene = dynamic(() => import("./NetworkScene"), { ssr: false });
-
-type Mode = "none" | "canvas" | "r3f";
-
 export default function NetworkHero() {
-  const [mode, setMode] = useState<Mode>("none");
+  const [mounted, setMounted] = useState(false);
   const [shown, setShown] = useState(false);
 
   useEffect(() => {
     const flag = process.env.NEXT_PUBLIC_NETWORK ?? "on";
     if (flag === "off") return;
 
-    const decide = () => {
-      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const mobile = window.matchMedia("(max-width: 767px)").matches;
-      const cores = navigator.hardwareConcurrency ?? 8;
-      const lowEnd = cores <= 4;
-      setMode(reduce || mobile || lowEnd ? "canvas" : "r3f");
-      // fade in over 1.5s after mount
-      requestAnimationFrame(() => setShown(true));
-    };
-
     const ric =
       window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 200));
-    const id = ric(decide);
+    const id = ric(() => {
+      setMounted(true);
+      // fade in over 1.5s after mount
+      requestAnimationFrame(() => setShown(true));
+    });
     return () => {
       if (window.cancelIdleCallback) window.cancelIdleCallback(id as number);
     };
   }, []);
 
-  if (mode === "none") return null;
+  if (!mounted) return null;
 
   return (
     <div
       className="pointer-events-none absolute inset-0 transition-opacity duration-[1500ms] ease-out"
       style={{ opacity: shown ? 1 : 0 }}
     >
-      {mode === "canvas" ? <NetworkCanvas interactive={false} /> : <NetworkScene />}
+      <NetworkCanvas />
     </div>
   );
 }

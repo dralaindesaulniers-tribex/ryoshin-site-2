@@ -1,15 +1,16 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { networkCategories, networkValues } from "@/content/network";
 
 /**
- * 2D canvas network. The approved prototype
- * (/reference/ryoshin-network-background.html): center RYŌSHIN orb with a
- * slowly rotating half-ring, density-biased satellites, colored glow halos,
- * pulses traveling along edges, and conceptual category labels on the outer
- * field. No company names (those live in the Partners section network).
- *
- * This is also the required fallback (spec 7.3) for mobile and low-end devices.
+ * The hero network, ALL devices (per Alain, July 2026: the approved prototype
+ * at ryoshin-neural-background.netlify.app is the reference, not the R3F
+ * scene). Center RYŌSHIN orb with a slowly rotating half-ring, density-biased
+ * drifting satellites, colored glow halos, mouse repulsion, and organic
+ * randomly-spawned pulses. Category labels plus extra-faded value words live
+ * strictly OUTSIDE the headline band so text always wins. No company names
+ * (those live in the Partners section network).
  */
 
 type Vec = [number, number];
@@ -20,7 +21,7 @@ const INDIGO: Vec3 = [107, 135, 168];
 const SAGE: Vec3 = [127, 160, 140];
 type Vec3 = [number, number, number];
 
-type Node = {
+type NetNode = {
   bx: number;
   by: number;
   r: number;
@@ -30,6 +31,7 @@ type Node = {
   driftA: number;
   driftS: number;
   label: string | null;
+  labelAlpha: number;
 };
 
 function rand(a: number, b: number) {
@@ -50,14 +52,12 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
     let W = 0;
     let H = 0;
     let DPR = 1;
-    let nodes: Node[] = [];
+    let nodes: NetNode[] = [];
     let edges: [number, number, number][] = [];
     let pulses: { edge: [number, number, number]; t: number; speed: number; flip: boolean; color: Vec3 }[] = [];
     let raf = 0;
     let lastPulse = 0;
     const mouse = { x: -9999, y: -9999 };
-
-    const categories = ["Strategy", "Technology", "Community", "People", "Ideas", "Projects", "Places", "Culture", "AI"];
 
     const pickColor = (): Vec3 => {
       const r = Math.random();
@@ -81,7 +81,7 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
       pulses = [];
 
       const isMobile = W < 700;
-      const count = isMobile ? 64 : 118;
+      const count = isMobile ? 70 : 130;
       const cx = W / 2;
       const cy = H / 2;
       const minWH = Math.min(W, H);
@@ -97,19 +97,17 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         driftA: 0,
         driftS: 0,
         label: null,
+        labelAlpha: 0,
       });
 
       // Anonymous satellites, density biased toward center
-      let catIdx = 0;
       for (let i = 1; i < count; i++) {
         const ang = Math.random() * Math.PI * 2;
         const t = Math.pow(Math.random(), 1.45);
         const rad = 70 + t * minWH * 0.66;
         const x = cx + Math.cos(ang) * rad * (W / minWH) * 0.75;
         const y = cy + Math.sin(ang) * rad * 0.88;
-        const big = Math.random() < 0.14;
-        const distFromCenter = Math.hypot(x - cx, y - cy);
-        const labelSafe = distFromCenter > minWH * 0.34;
+        const big = Math.random() < 0.16;
         nodes.push({
           bx: x,
           by: y,
@@ -119,8 +117,42 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           phase: Math.random() * Math.PI * 2,
           driftA: rand(4, 14),
           driftS: rand(0.00012, 0.0004),
-          label: big && labelSafe && catIdx < categories.length && Math.random() < 0.8 ? categories[catIdx++] : null,
+          label: null,
+          labelAlpha: 0,
         });
+      }
+
+      // Labels: categories readable-faint, value words a whisper (per Alain).
+      // The keep-out band covers the headline / subhead / chat column plus
+      // drift + mouse-push slack, so no word ever sits over the hero text.
+      // Mobile gets categories only; there is no safe room for more.
+      const wanted: [string, number][] = [
+        ...networkCategories.map((l): [string, number] => [l, 0.3]),
+        ...(isMobile ? [] : networkValues.map((l): [string, number] => [l, 0.16])),
+      ];
+      const inTextBand = (n: NetNode) =>
+        Math.abs(n.by - cy) < H * 0.36 && Math.abs(n.bx - cx) < W * 0.42;
+      const inBounds = (n: NetNode) =>
+        n.bx > 48 && n.bx < W - 48 && n.by > 84 && n.by < H - 28;
+      const candidates = nodes
+        .filter((n) => !n.center && !inTextBand(n) && inBounds(n))
+        .sort((a, b) => b.r - a.r);
+      const placed: NetNode[] = [];
+      for (const [label, alpha] of wanted) {
+        for (const sep of [minWH * 0.18, minWH * 0.12, minWH * 0.07]) {
+          const pick = candidates.find(
+            (c) =>
+              !c.label &&
+              placed.every((p) => Math.hypot(p.bx - c.bx, p.by - c.by) > sep),
+          );
+          if (pick) {
+            pick.label = label;
+            pick.labelAlpha = alpha;
+            pick.r = Math.max(pick.r, 3); // labeled nodes read as anchors
+            placed.push(pick);
+            break;
+          }
+        }
       }
 
       // Edges: nearby links + guaranteed spokes from center
@@ -150,10 +182,11 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
       if (r < 0.3) color = SHU;
       else if (r < 0.45) color = GOLD;
       else if (r < 0.55) color = INDIGO;
-      pulses.push({ edge, t: 0, speed: rand(0.0018, 0.0042), flip: Math.random() < 0.5, color });
+      // wide speed range = visibly variable shots of light (prototype feel)
+      pulses.push({ edge, t: 0, speed: rand(0.0014, 0.005), flip: Math.random() < 0.5, color });
     };
 
-    const nodePos = (n: Node, time: number): Vec => {
+    const nodePos = (n: NetNode, time: number): Vec => {
       const dx = Math.cos(time * n.driftS + n.phase) * n.driftA;
       const dy = Math.sin(time * n.driftS * 1.3 + n.phase) * n.driftA;
       let x = n.bx + dx;
@@ -204,13 +237,13 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         const alpha = Math.sin(p.t * Math.PI);
         const c = p.color;
         const glow = ctx!.createRadialGradient(x, y, 0, x, y, 11);
-        glow.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.35 * alpha})`);
+        glow.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.45 * alpha})`);
         glow.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
         ctx!.fillStyle = glow;
         ctx!.beginPath();
         ctx!.arc(x, y, 11, 0, Math.PI * 2);
         ctx!.fill();
-        ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.55 * alpha})`;
+        ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.75 * alpha})`;
         ctx!.beginPath();
         ctx!.arc(x, y, 1.5, 0, Math.PI * 2);
         ctx!.fill();
@@ -226,8 +259,8 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         if (n.center) {
           const breathe = 0.85 + 0.15 * Math.sin(time * 0.0009);
           const g = ctx!.createRadialGradient(x, y, 0, x, y, 95 * breathe);
-          g.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.3)`);
-          g.addColorStop(0.35, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.1)`);
+          g.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.38)`);
+          g.addColorStop(0.35, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.12)`);
           g.addColorStop(1, "rgba(0,0,0,0)");
           ctx!.fillStyle = g;
           ctx!.beginPath();
@@ -273,9 +306,14 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         }
 
         if (n.label) {
-          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0.3)`;
+          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${n.labelAlpha})`;
           ctx!.font = `300 11px "General Sans", "Helvetica Neue", Arial, sans-serif`;
-          ctx!.fillText(n.label.toUpperCase(), x + n.r + 8, y + 4);
+          const text = n.label.toUpperCase();
+          // flip to the left side of the node near the right edge so words
+          // never clip off-screen
+          const tw = ctx!.measureText(text).width;
+          const lx = x + n.r + 8 + tw > W - 12 ? x - n.r - 8 - tw : x + n.r + 8;
+          ctx!.fillText(text, lx, y + 4);
         }
       }
 
