@@ -32,7 +32,7 @@ export default function PageHero({
             </span>
           </span>
         </blockquote>
-        {attribution && <p className="text-paper/45 mt-8">{attribution}</p>}
+        {attribution && <p className="text-paper/55 mt-8">{attribution}</p>}
         {children}
         <div className="mt-12 flex w-full justify-center">
           <ChatInput />

@@ -280,7 +280,7 @@ export default function PartnersNetwork() {
           aria-label="Interactive network of RYŌSHIN partners and clients"
         />
         <p
-          className="eyebrow text-paper/35 pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px]"
+          className="eyebrow text-paper/55 pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px]"
           aria-hidden="true"
         >
           {touch ? "Tap a node to explore" : hovered ? "Click to explore" : "Hover a node"}

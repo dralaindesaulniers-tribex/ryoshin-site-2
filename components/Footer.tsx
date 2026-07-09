@@ -23,7 +23,7 @@ export default function Footer() {
           </div>
 
           <nav aria-label="Footer">
-            <h2 className="eyebrow text-paper/40 mb-6">Explore</h2>
+            <h2 className="eyebrow text-paper/60 mb-6">Explore</h2>
             <ul className="space-y-3">
               <li>
                 <Link href="/" className="link-draw hover:text-paper transition-colors">
@@ -51,7 +51,7 @@ export default function Footer() {
           </nav>
 
           <div>
-            <h2 className="eyebrow text-paper/40 mb-6">Contact</h2>
+            <h2 className="eyebrow text-paper/60 mb-6">Contact</h2>
             <address className="space-y-3 not-italic">
               <p>
                 {contact.address.map((line) => (
@@ -86,7 +86,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="text-paper/35 pt-8 text-sm">
+        <p className="text-paper/55 pt-8 text-sm">
           Copyright {new Date().getFullYear()} {brand.name}, all rights reserved.
         </p>
       </div>

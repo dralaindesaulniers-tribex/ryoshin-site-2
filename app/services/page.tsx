@@ -24,7 +24,7 @@ export default function ServicesPage() {
       <section className="bg-ink-soft section-pad relative overflow-hidden">
         <div aria-hidden="true" className="glow-shu inset-x-0 top-0 h-[50%]" />
         <div className="relative mx-auto max-w-[1200px] px-6 md:px-10">
-          <p className="eyebrow text-paper/45 mb-14">
+          <p className="eyebrow text-paper/55 mb-14">
             <span className="eyebrow-num">01</span>The framework
           </p>
           <div data-stagger-children className="grid gap-6 md:grid-cols-3">

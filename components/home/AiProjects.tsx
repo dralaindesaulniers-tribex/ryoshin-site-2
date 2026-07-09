@@ -32,7 +32,7 @@ export default function AiProjects() {
                 Placeholder, awaiting Ryan
               </p>
               <h3 className="font-display text-paper/85 mt-5 text-xl">{item.title}</h3>
-              <p className="text-paper/45 mt-4 text-base">{item.body}</p>
+              <p className="text-paper/55 mt-4 text-base">{item.body}</p>
             </li>
           ))}
         </ul>

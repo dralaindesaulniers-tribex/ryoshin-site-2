@@ -38,7 +38,7 @@ export default function Testimonials() {
                 )}
                 <div>
                   <p className="text-ink font-medium">{t.name}</p>
-                  <p className="text-ink/55 text-sm">{t.title}</p>
+                  <p className="text-ink/65 text-sm">{t.title}</p>
                 </div>
               </figcaption>
             </figure>

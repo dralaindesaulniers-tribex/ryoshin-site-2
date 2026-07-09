@@ -4,6 +4,7 @@ import Link from "next/link";
 import ChatInput from "@/components/ChatInput";
 import FooterCta from "@/components/FooterCta";
 import HalfSun from "@/components/HalfSun";
+import KanjiArt from "@/components/KanjiArt";
 import { about, brand } from "@/content/site";
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ export default function AboutPage() {
             </span>
           </span>
         </h1>
-        <p className="text-paper/45 mt-8">{about.heroAttribution}</p>
+        <p className="text-paper/55 mt-8">{about.heroAttribution}</p>
         <div className="mt-14 flex w-full justify-center">
           <ChatInput />
         </div>
@@ -119,15 +120,12 @@ export default function AboutPage() {
           MANDATORY native-speaker review before launch ============ */}
       <section className="bg-ink text-paper section-pad relative overflow-hidden">
         {/* backdrop kanji art, decorative */}
-        <span
+        <KanjiArt
+          text="良心"
           data-parallax
-          aria-hidden="true"
-          lang="ja"
-          className="font-jp text-shu/8 pointer-events-none absolute -top-10 -right-8 leading-none font-light select-none"
-          style={{ fontSize: "clamp(12rem, 30vw, 26rem)" }}
-        >
-          良心
-        </span>
+          className="text-shu/8 pointer-events-none absolute -top-10 -right-8 select-none"
+          style={{ width: "clamp(24rem, 60vw, 52rem)" }}
+        />
 
         <div className="relative mx-auto max-w-[1200px] px-6 md:px-10">
           <div className="grid gap-6 md:grid-cols-12">
@@ -156,7 +154,7 @@ export default function AboutPage() {
                     {entry.kana}
                   </span>
                   <span className="text-paper/80"> · {entry.romaji} </span>
-                  <span className="text-paper/45">({entry.pronunciation})</span>
+                  <span className="text-paper/55">({entry.pronunciation})</span>
                 </p>
                 <p className="font-display text-paper mt-3 text-xl">{entry.literal}</p>
                 <p className="text-paper/60 mt-4 max-w-[46ch]">{entry.meaning}</p>
@@ -164,7 +162,7 @@ export default function AboutPage() {
             ))}
           </div>
 
-          <p className="text-paper/45 mt-16 max-w-[52ch]" style={{ fontSize: "var(--text-body-lg)" }}>
+          <p className="text-paper/55 mt-16 max-w-[52ch]" style={{ fontSize: "var(--text-body-lg)" }}>
             {brand.tagline}
           </p>
         </div>
@@ -177,9 +175,7 @@ export default function AboutPage() {
           <div className="mt-16 grid gap-14 md:grid-cols-3 md:gap-10">
             {about.values.items.map((v, i) => (
               <div key={v.title} className={i === 1 ? "md:pt-12" : ""}>
-                <p lang="ja" className="font-jp text-ink/25 text-5xl font-light">
-                  {v.kanji}
-                </p>
+                <KanjiArt text={v.kanji} className="text-ink/25 h-12 w-auto" />
                 <h3 className="display text-ink mt-5 text-2xl md:text-3xl">{v.title}</h3>
                 <p className="text-ink/70 mt-4 max-w-[40ch]" style={{ fontSize: "var(--text-body-lg)" }}>
                   {v.body}

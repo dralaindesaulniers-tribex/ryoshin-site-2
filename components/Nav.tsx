@@ -10,6 +10,9 @@ export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  // home keeps the hamburger at every size so the hero stays clean;
+  // inner pages show the full link row on desktop
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 48);
@@ -52,8 +55,8 @@ export default function Nav() {
           />
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden items-center gap-10 md:flex">
+        {/* Desktop links (inner pages only) */}
+        <ul className={`hidden items-center gap-10 ${isHome ? "" : "md:flex"}`}>
           {nav.map((item) => (
             <li key={item.href}>
               <Link
@@ -77,7 +80,9 @@ export default function Nav() {
           onClick={() => setOpen(!open)}
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
-          className="relative z-50 flex h-11 w-11 flex-col items-center justify-center gap-[7px] md:hidden"
+          className={`relative z-50 flex h-11 w-11 flex-col items-center justify-center gap-[7px] ${
+            isHome ? "" : "md:hidden"
+          }`}
         >
           <span
             className={`bg-paper block h-px w-7 transition-transform duration-300 ${
@@ -92,18 +97,18 @@ export default function Nav() {
         </button>
       </nav>
 
-      {/* Mobile menu, full ink overlay with display type */}
+      {/* Menu overlay, full ink with display type (all sizes on home, mobile elsewhere) */}
       <div
-        className={`bg-ink fixed inset-0 z-40 flex flex-col justify-center px-8 transition-opacity duration-300 md:hidden ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`bg-ink fixed inset-0 z-40 flex flex-col justify-center px-8 transition-opacity duration-300 md:px-16 ${
+          isHome ? "" : "md:hidden"
+        } ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
       >
-        <ul className="flex flex-col gap-7">
+        <ul className="mx-auto flex w-full max-w-[1200px] flex-col gap-7">
           {nav.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`display block text-[2.5rem] leading-tight ${
+                className={`display block text-[2.5rem] leading-tight md:text-[3.25rem] ${
                   pathname === item.href ? "text-shu" : "text-paper"
                 }`}
               >

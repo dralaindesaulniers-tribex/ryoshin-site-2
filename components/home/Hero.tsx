@@ -10,7 +10,9 @@ import { hero } from "@/content/site";
  */
 export default function Hero() {
   return (
-    <section className="bg-ink text-paper relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 md:px-10">
+    // isolate traps the drei Html label z-indexes inside the hero so they
+    // can never paint over the fixed nav or its menu overlay
+    <section className="bg-ink text-paper isolate relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 md:px-10">
       {/* living network background (canvas fallback or R3F 3D), then half sun */}
       <NetworkHero />
       <HalfSun />

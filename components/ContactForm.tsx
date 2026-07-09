@@ -56,6 +56,7 @@ export default function ContactForm() {
           name="inquiry"
           required
           defaultValue=""
+          aria-label="How can RYŌSHIN Solutions help you?"
           className="bg-paper text-ink border border-(--color-line-light) rounded-[2px] px-4 py-3 outline-none focus:border-shu"
         >
           <option value="" disabled>
@@ -81,7 +82,7 @@ export default function ContactForm() {
           onChange={(e) => setCount(e.target.value.length)}
           className="bg-paper text-ink border border-(--color-line-light) resize-y rounded-[2px] px-4 py-3 outline-none focus:border-shu"
         />
-        <span className="text-ink/45 self-end text-sm tabular-nums">
+        <span className="text-ink/65 self-end text-sm tabular-nums">
           {count} / {max}
         </span>
       </div>

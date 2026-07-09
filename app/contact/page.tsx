@@ -76,7 +76,7 @@ export default function ContactPage() {
               <blockquote className="font-display text-ink/90 text-lg leading-snug">
                 &ldquo;{contactPage.testimonial.quote}&rdquo;
               </blockquote>
-              <figcaption className="text-ink/55 mt-5 text-sm">
+              <figcaption className="text-ink/65 mt-5 text-sm">
                 {contactPage.testimonial.name}
               </figcaption>
             </figure>

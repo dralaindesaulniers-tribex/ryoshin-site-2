@@ -10,7 +10,7 @@ export default function StatsBand() {
     <section className="bg-ink section-pad relative overflow-hidden">
       <div aria-hidden="true" className="glow-shu inset-x-0 top-1/4 h-[60%]" />
       <div className="relative mx-auto max-w-[1200px] px-6 md:px-10">
-        <p className="eyebrow text-paper/45 mb-12">
+        <p className="eyebrow text-paper/55 mb-12">
           <span className="eyebrow-num">04</span>By the numbers
         </p>
         <dl data-stagger-children className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

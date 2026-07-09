@@ -40,7 +40,7 @@ export default function ChatInput() {
           </svg>
         </button>
       </div>
-      <p className="eyebrow text-paper/35 mt-4 text-center text-[11px]">
+      <p className="eyebrow text-paper/55 mt-4 text-center text-[11px]">
         {hero.chatMicrocopy}
       </p>
     </div>
