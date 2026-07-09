@@ -1,5 +1,6 @@
 import ChatInput from "@/components/ChatInput";
 import HalfSun from "@/components/HalfSun";
+import NetworkHero from "@/components/network/NetworkHero";
 import { hero } from "@/content/site";
 
 /**
@@ -10,7 +11,8 @@ import { hero } from "@/content/site";
 export default function Hero() {
   return (
     <section className="bg-ink text-paper relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 md:px-10">
-      {/* NETWORK-MOUNT: R3F scene renders here (step 6), behind content */}
+      {/* living network background (canvas fallback or R3F 3D), then half sun */}
+      <NetworkHero />
       <HalfSun />
       <div className="relative z-10 flex w-full max-w-[1200px] flex-col items-center text-center">
         {/* display type intentionally runs wider than the 1200px content grid */}
