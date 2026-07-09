@@ -1,17 +1,17 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import * as THREE from "three";
-import { networkEntities, type NetworkEntity } from "@/content/network";
 
 /**
- * R3F evolution of the approved network (spec 7.2). Desktop, capable devices.
- * Performance (spec 7.4): anonymous nodes are a single InstancedMesh (one draw
- * call), edges are one LineSegments pass, pulses share one instanced pool.
- * Named partner/client nodes are individual meshes (only 8) so they can be
- * hovered and clicked to ease the camera in with an info card.
+ * R3F evolution of the approved prototype (spec 7). Desktop, capable devices.
+ * Abstract living network: the RYŌSHIN core, density-biased anonymous nodes,
+ * conceptual category labels (Ideas, Culture, Technology...) on the outer
+ * field. No company names here (those live in the Partners section network).
+ * Performance (spec 7.4): anonymous nodes are one InstancedMesh, edges are one
+ * LineSegments pass.
  */
 
 const COLORS = {
@@ -21,6 +21,19 @@ const COLORS = {
   indigo: new THREE.Color("#6B87A8"),
   sage: new THREE.Color("#7FA08C"),
 };
+
+const CATEGORIES = [
+  "Strategy",
+  "Technology",
+  "Community",
+  "People",
+  "Ideas",
+  "Projects",
+  "Places",
+  "Culture",
+  "AI",
+];
+
 function pickColor() {
   const r = Math.random();
   if (r < 0.42) return COLORS.paper;
@@ -39,7 +52,6 @@ type NodeDef = {
   driftS: number;
 };
 
-// radial glow sprite texture, generated once
 function makeGlowTexture() {
   const s = 128;
   const c = document.createElement("canvas");
@@ -51,8 +63,7 @@ function makeGlowTexture() {
   grad.addColorStop(1, "rgba(255,255,255,0)");
   g.fillStyle = grad;
   g.fillRect(0, 0, s, s);
-  const tex = new THREE.CanvasTexture(c);
-  return tex;
+  return new THREE.CanvasTexture(c);
 }
 
 function Core() {
@@ -62,16 +73,12 @@ function Core() {
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
-    if (ring.current) ring.current.rotation.z = t * 0.12; // one turn ~52s
-    if (glow.current) {
-      const b = 0.85 + 0.15 * Math.sin(t * 0.9);
-      glow.current.scale.setScalar(4.6 * b);
-    }
+    if (ring.current) ring.current.rotation.z = t * 0.12;
+    if (glow.current) glow.current.scale.setScalar(4.6 * (0.85 + 0.15 * Math.sin(t * 0.9)));
   });
 
   return (
     <group>
-      {/* soft aura */}
       <sprite ref={glow} scale={4.6}>
         <spriteMaterial
           map={glowTex}
@@ -82,7 +89,6 @@ function Core() {
           depthWrite={false}
         />
       </sprite>
-      {/* hot core */}
       <mesh>
         <sphereGeometry args={[0.28, 32, 32]} />
         <meshBasicMaterial color={new THREE.Color("#FFD6C8")} />
@@ -91,7 +97,6 @@ function Core() {
         <sphereGeometry args={[0.28, 32, 32]} />
         <meshBasicMaterial color={COLORS.shu} transparent opacity={0.35} depthWrite={false} />
       </mesh>
-      {/* rotating half-ring, RYŌSHIN mark */}
       <mesh ref={ring}>
         <torusGeometry args={[0.95, 0.022, 12, 80, Math.PI]} />
         <meshBasicMaterial color={COLORS.shu} />
@@ -104,10 +109,6 @@ function AnonNodes({ defs }: { defs: NodeDef[] }) {
   const mesh = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  useMemo(() => {
-    // set instance colors once on mount via ref callback below
-  }, []);
-
   useFrame(({ clock }) => {
     const m = mesh.current;
     if (!m) return;
@@ -119,8 +120,7 @@ function AnonNodes({ defs }: { defs: NodeDef[] }) {
         n.base.y + Math.sin(t * n.driftS * 1.3 + n.phase) * n.driftA,
         n.base.z + Math.cos(t * n.driftS * 0.8 + n.phase) * n.driftA * 0.6,
       );
-      const flick = 0.8 + 0.2 * Math.sin(clock.elapsedTime + n.phase * 3);
-      dummy.scale.setScalar(n.r * flick);
+      dummy.scale.setScalar(n.r * (0.8 + 0.2 * Math.sin(clock.elapsedTime + n.phase * 3)));
       dummy.updateMatrix();
       m.setMatrixAt(i, dummy.matrix);
     }
@@ -144,74 +144,36 @@ function AnonNodes({ defs }: { defs: NodeDef[] }) {
   );
 }
 
-function NamedNode({
-  entity,
-  position,
-}: {
-  entity: NetworkEntity;
-  position: THREE.Vector3;
-}) {
-  const [hovered, setHovered] = useState(false);
-  const mesh = useRef<THREE.Mesh>(null);
-  const color = entity.tier === "partner" ? COLORS.shu : COLORS.gold;
-  const size = entity.tier === "partner" ? 0.16 : 0.12;
-  const clickable = Boolean(entity.workAnchor);
-
-  useFrame(({ clock }) => {
-    if (!mesh.current) return;
-    const pulse = hovered ? 1.4 : 1 + 0.06 * Math.sin(clock.elapsedTime * 2 + position.x);
-    mesh.current.scale.setScalar(size * pulse);
-  });
-
+// Category label node: a small paper node with a dim floating label. No interaction.
+function LabelNode({ label, position }: { label: string; position: THREE.Vector3 }) {
   return (
     <group position={position}>
-      <mesh
-        ref={mesh}
-        onPointerOver={(e) => {
-          e.stopPropagation();
-          setHovered(true);
-          if (clickable) document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          setHovered(false);
-          document.body.style.cursor = "";
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (entity.workAnchor) window.location.href = entity.workAnchor;
-        }}
-      >
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial color={color} toneMapped={false} />
+      <mesh scale={0.055}>
+        <sphereGeometry args={[1, 12, 12]} />
+        <meshBasicMaterial color={COLORS.paper} toneMapped={false} />
       </mesh>
-      <Html center distanceFactor={10} position={[0, 0.32, 0]} pointerEvents="none">
+      <Html center distanceFactor={11} position={[0, 0.28, 0]} pointerEvents="none">
         <span
           style={{
             color: "#EDEAE4",
-            opacity: hovered ? 0.95 : 0.5,
+            opacity: 0.32,
             fontFamily: "var(--font-body)",
-            fontSize: "13px",
+            fontSize: "11px",
             fontWeight: 400,
-            letterSpacing: "0.02em",
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
             whiteSpace: "nowrap",
             textShadow: "0 1px 6px rgba(16,17,18,0.9)",
-            transition: "opacity 0.3s",
           }}
         >
-          {entity.shortName ?? entity.name}
+          {label}
         </span>
       </Html>
     </group>
   );
 }
 
-function Edges({
-  positions,
-  pairs,
-}: {
-  positions: THREE.Vector3[];
-  pairs: [number, number][];
-}) {
+function Edges({ positions, pairs }: { positions: THREE.Vector3[]; pairs: [number, number][] }) {
   const geom = useRef<THREE.BufferGeometry>(null);
   const arr = useMemo(() => new Float32Array(pairs.length * 6), [pairs.length]);
 
@@ -243,12 +205,7 @@ function Rig() {
 
   useFrame(({ clock, pointer }) => {
     const t = clock.elapsedTime;
-    // gentle screensaver float, camera drift ±2deg with pointer parallax
-    desired.set(
-      pointer.x * 0.6 + Math.sin(t * 0.15) * 0.3,
-      pointer.y * 0.4 + Math.cos(t * 0.12) * 0.2,
-      9,
-    );
+    desired.set(pointer.x * 0.6 + Math.sin(t * 0.15) * 0.3, pointer.y * 0.4 + Math.cos(t * 0.12) * 0.2, 9);
     camera.position.lerp(desired, 0.04);
     camera.lookAt(origin);
   });
@@ -257,20 +214,13 @@ function Rig() {
 }
 
 function Scene() {
-  const { anon, named, namedPositions, allPositions, pairs } = useMemo(() => {
-    const partners = networkEntities.filter((e) => e.tier === "partner");
-    const clients = networkEntities.filter((e) => e.tier === "client");
-
-    const namedPositions: THREE.Vector3[] = [];
-    partners.forEach((_, i) => {
-      const a = -Math.PI / 2 + (i / partners.length) * Math.PI * 2;
-      namedPositions.push(new THREE.Vector3(Math.cos(a) * 2.2, Math.sin(a) * 1.5, Math.sin(a * 1.3) * 0.6));
+  const { anon, categoryPositions, allPositions, pairs } = useMemo(() => {
+    // category label nodes on the outer field
+    const categoryPositions: THREE.Vector3[] = CATEGORIES.map((_, i) => {
+      const a = (i / CATEGORIES.length) * Math.PI * 2 + 0.3;
+      const rad = 3.4 + (i % 3) * 0.9;
+      return new THREE.Vector3(Math.cos(a) * rad, Math.sin(a) * rad * 0.7, (Math.random() - 0.5) * 2);
     });
-    clients.forEach((_, i) => {
-      const a = -Math.PI / 6 + (i / clients.length) * Math.PI * 2;
-      namedPositions.push(new THREE.Vector3(Math.cos(a) * 4, Math.sin(a) * 2.8, Math.cos(a * 1.7) * 0.9));
-    });
-    const named = [...partners, ...clients];
 
     // anonymous field, density biased to center, flattened in z
     const anon: NodeDef[] = [];
@@ -289,34 +239,31 @@ function Scene() {
       });
     }
 
-    // live positions array: [core, ...named, ...anon]
     const allPositions: THREE.Vector3[] = [
       new THREE.Vector3(0, 0, 0),
-      ...namedPositions.map((p) => p.clone()),
+      ...categoryPositions.map((p) => p.clone()),
       ...anon.map((n) => n.base.clone()),
     ];
 
-    // edges: spokes from core to named + some anon-anon proximity links
     const pairs: [number, number][] = [];
-    const namedStart = 1;
-    named.forEach((_, i) => pairs.push([0, namedStart + i]));
-    const anonStart = 1 + named.length;
+    const catStart = 1;
+    CATEGORIES.forEach((_, i) => pairs.push([0, catStart + i]));
+    const anonStart = 1 + CATEGORIES.length;
     for (let i = 0; i < anon.length; i++) {
-      // link some anon to core
       if (anon[i].r > 0.04 && Math.random() < 0.5) pairs.push([0, anonStart + i]);
       for (let j = i + 1; j < anon.length; j++) {
-        const d = anon[i].base.distanceTo(anon[j].base);
-        if (d < 1.5 && Math.random() < 0.12) pairs.push([anonStart + i, anonStart + j]);
+        if (anon[i].base.distanceTo(anon[j].base) < 1.5 && Math.random() < 0.12) {
+          pairs.push([anonStart + i, anonStart + j]);
+        }
       }
     }
 
-    return { anon, named, namedPositions, allPositions, pairs };
+    return { anon, categoryPositions, allPositions, pairs };
   }, []);
 
-  // keep allPositions in sync with anon drift for edges
   useFrame(({ clock }) => {
     const t = clock.elapsedTime * 1000;
-    const anonStart = 1 + named.length;
+    const anonStart = 1 + CATEGORIES.length;
     for (let i = 0; i < anon.length; i++) {
       const n = anon[i];
       allPositions[anonStart + i].set(
@@ -333,8 +280,8 @@ function Scene() {
       <Core />
       <AnonNodes defs={anon} />
       <Edges positions={allPositions} pairs={pairs} />
-      {named.map((e, i) => (
-        <NamedNode key={e.id} entity={e} position={namedPositions[i]} />
+      {CATEGORIES.map((label, i) => (
+        <LabelNode key={label} label={label} position={categoryPositions[i]} />
       ))}
     </>
   );

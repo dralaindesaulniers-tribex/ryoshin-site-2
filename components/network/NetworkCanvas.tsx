@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { networkEntities } from "@/content/network";
 
 /**
- * 2D canvas network. Evolves the approved prototype
+ * 2D canvas network. The approved prototype
  * (/reference/ryoshin-network-background.html): center RYŌSHIN orb with a
  * slowly rotating half-ring, density-biased satellites, colored glow halos,
- * pulses traveling along edges. Ryan's evolution (spec 7.2): partners render
- * as large named nodes on the first ring, clients as medium named nodes on the
- * second ring, both sourced from content/network.ts.
+ * pulses traveling along edges, and conceptual category labels on the outer
+ * field. No company names (those live in the Partners section network).
  *
  * This is also the required fallback (spec 7.3) for mobile and low-end devices.
  */
@@ -32,7 +30,6 @@ type Node = {
   driftA: number;
   driftS: number;
   label: string | null;
-  named: boolean; // partner/client, brighter + always-on label
 };
 
 function rand(a: number, b: number) {
@@ -60,7 +57,7 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
     let lastPulse = 0;
     const mouse = { x: -9999, y: -9999 };
 
-    const categories = ["Strategy", "Technology", "Community", "People", "Ideas", "Projects", "Places"];
+    const categories = ["Strategy", "Technology", "Community", "People", "Ideas", "Projects", "Places", "Culture", "AI"];
 
     const pickColor = (): Vec3 => {
       const r = Math.random();
@@ -100,39 +97,11 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         driftA: 0,
         driftS: 0,
         label: null,
-        named: false,
       });
-
-      // Named nodes: partners ring 1 (large), clients ring 2 (medium)
-      const partners = networkEntities.filter((e) => e.tier === "partner");
-      const clients = networkEntities.filter((e) => e.tier === "client");
-
-      const placeRing = (list: typeof networkEntities, radius: number, size: number, startAng: number) => {
-        list.forEach((ent, i) => {
-          const ang = startAng + (i / list.length) * Math.PI * 2;
-          const bx = cx + Math.cos(ang) * radius * (W / minWH) * 0.72;
-          const by = cy + Math.sin(ang) * radius * 0.82;
-          nodes.push({
-            bx,
-            by,
-            r: size,
-            center: false,
-            color: ent.tier === "partner" ? SHU : GOLD,
-            phase: Math.random() * Math.PI * 2,
-            driftA: rand(3, 8),
-            driftS: rand(0.00012, 0.0003),
-            label: ent.shortName ?? ent.name,
-            named: true,
-          });
-        });
-      };
-      placeRing(partners, minWH * 0.24, isMobile ? 4.5 : 6, -Math.PI / 2);
-      placeRing(clients, minWH * 0.44, isMobile ? 3.2 : 4.4, -Math.PI / 6);
 
       // Anonymous satellites, density biased toward center
       let catIdx = 0;
-      const placed = nodes.length;
-      for (let i = placed; i < count; i++) {
+      for (let i = 1; i < count; i++) {
         const ang = Math.random() * Math.PI * 2;
         const t = Math.pow(Math.random(), 1.45);
         const rad = 70 + t * minWH * 0.66;
@@ -151,7 +120,6 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           driftA: rand(4, 14),
           driftS: rand(0.00012, 0.0004),
           label: big && labelSafe && catIdx < categories.length && Math.random() < 0.8 ? categories[catIdx++] : null,
-          named: false,
         });
       }
 
@@ -164,7 +132,7 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         }
       }
       nodes.forEach((n, i) => {
-        if (i !== 0 && (n.r > 2.8 || n.named)) {
+        if (i !== 0 && n.r > 2.8) {
           edges.push([0, i, Math.hypot(n.bx - nodes[0].bx, n.by - nodes[0].by)]);
         }
       });
@@ -288,26 +256,24 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           ctx!.stroke();
           ctx!.shadowBlur = 0;
         } else {
-          const boost = n.named ? 1.7 : 1;
           const haloR = n.r * (n.r > 2.8 ? 6 : 4.5);
           const halo = ctx!.createRadialGradient(x, y, 0, x, y, haloR);
-          halo.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.22 * flicker * boost})`);
+          halo.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.22 * flicker})`);
           halo.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
           ctx!.fillStyle = halo;
           ctx!.beginPath();
           ctx!.arc(x, y, haloR, 0, Math.PI * 2);
           ctx!.fill();
-          ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${(0.4 + n.r * 0.13) * flicker * boost})`;
+          ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${(0.4 + n.r * 0.13) * flicker})`;
           ctx!.beginPath();
           ctx!.arc(x, y, n.r, 0, Math.PI * 2);
           ctx!.fill();
         }
 
         if (n.label) {
-          const op = n.named ? 0.62 : 0.3;
-          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${op})`;
-          ctx!.font = `300 ${n.named ? 12 : 11}px "General Sans", "Helvetica Neue", Arial, sans-serif`;
-          ctx!.fillText(n.named ? n.label : n.label.toUpperCase(), x + n.r + 8, y + 4);
+          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0.3)`;
+          ctx!.font = `300 11px "General Sans", "Helvetica Neue", Arial, sans-serif`;
+          ctx!.fillText(n.label.toUpperCase(), x + n.r + 8, y + 4);
         }
       }
 
