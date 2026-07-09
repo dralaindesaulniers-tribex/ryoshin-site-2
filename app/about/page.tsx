@@ -174,7 +174,7 @@ export default function AboutPage() {
           <p className="eyebrow text-shu text-center">{about.values.eyebrow}</p>
           <div className="mt-16 grid gap-14 md:grid-cols-3 md:gap-10">
             {about.values.items.map((v, i) => (
-              <div key={v.title} className={i === 1 ? "md:pt-12" : ""}>
+              <div key={v.title}>
                 <KanjiArt text={v.kanji} className="text-ink/25 h-12 w-auto" />
                 <h3 className="display text-ink mt-5 text-2xl md:text-3xl">{v.title}</h3>
                 <p className="text-ink/70 mt-4 max-w-[40ch]" style={{ fontSize: "var(--text-body-lg)" }}>

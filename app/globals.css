@@ -195,3 +195,11 @@ body {
   color: var(--color-shu);
   margin-right: 0.75em;
 }
+
+/* reveal-line masks clip at the line box, which amputates descenders (j g y)
+   on tight display leading. Pad the clip region below the baseline and pull
+   the layout back with a matching negative margin. */
+:where(span, div):has(> [data-reveal-line]) {
+  padding-bottom: 0.18em;
+  margin-bottom: -0.18em;
+}

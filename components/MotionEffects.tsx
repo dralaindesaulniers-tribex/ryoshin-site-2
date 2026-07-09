@@ -30,7 +30,9 @@ export default function MotionEffects() {
       headings.forEach((lines, parent) => {
         gsap.fromTo(
           lines,
-          { yPercent: 110 },
+          /* 130 not 110: the mask has extra bottom padding for descenders,
+             so the line must start deeper to stay fully hidden */
+          { yPercent: 130 },
           {
             yPercent: 0,
             duration: 1.1,

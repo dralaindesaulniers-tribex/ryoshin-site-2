@@ -29,7 +29,7 @@ export default function ServicesPage() {
           </p>
           <div data-stagger-children className="grid gap-6 md:grid-cols-3">
             {services.framework.map((f, i) => (
-              <article key={f.romaji} className={`panel-dark p-8 md:p-9 ${i === 1 ? "md:mt-10" : ""}`}>
+              <article key={f.romaji} className="panel-dark p-8 md:p-9">
                 <p lang="ja" className="font-jp text-shu text-4xl font-light">
                   {f.kanji}
                 </p>
