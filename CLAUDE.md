@@ -53,6 +53,10 @@ Vermilion appears at most once per viewport as a focal point. No arbitrary Tailw
 - LCP < 2.0s Fast 4G, CLS < 0.02
 - prefers-reduced-motion: all motion collapses to simple fades. Non-negotiable.
 
+## Changelog rule
+
+At the end of any work session where you changed code, append a dated entry to `CHANGELOG.md` (repo root) summarizing what changed. Newest entries go at the top, grouped under a `## YYYY-MM-DD` heading (use today's date). Keep entries short, one bullet per meaningful change, plain language. No entry needed for sessions that only read or discussed code.
+
 ## Assets
 
 Missing (render styled placeholder + `TODO-ASSET` comment): RYŌSHIN SVG logo (using 1600px PNGs), Penticton Indian Band, Tribe Rocks, Eitree, Mobius Systems logos.
