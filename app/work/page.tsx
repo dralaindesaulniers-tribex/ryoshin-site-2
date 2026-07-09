@@ -41,12 +41,17 @@ export default function WorkPage() {
                   idx % 2 === 1 ? "md:order-2 md:col-start-8" : ""
                 }`}
               >
+                {/* photos fill the frame; logo marks sit contained in a shorter box */}
                 <Image
                   src={cs.image}
                   alt={cs.client}
                   width={800}
                   height={600}
-                  className="bg-paper h-72 w-full object-contain p-6"
+                  className={
+                    cs.logo
+                      ? "h-64 w-full object-cover md:h-80"
+                      : "bg-paper h-48 w-full object-contain p-8 md:h-64"
+                  }
                 />
               </div>
 

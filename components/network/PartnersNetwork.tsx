@@ -33,6 +33,7 @@ type PNode = {
 export default function PartnersNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [touch, setTouch] = useState(false);
   const router = useRouter();
   const nodesRef = useRef<PNode[]>([]);
   const hoverRef = useRef<string | null>(null);
@@ -46,6 +47,7 @@ export default function PartnersNetwork() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setTouch(window.matchMedia("(hover: none)").matches);
 
     let W = 0;
     let H = 0;
@@ -281,7 +283,7 @@ export default function PartnersNetwork() {
           className="eyebrow text-paper/35 pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px]"
           aria-hidden="true"
         >
-          {hovered ? "Click to explore" : "Hover a node"}
+          {touch ? "Tap a node to explore" : hovered ? "Click to explore" : "Hover a node"}
         </p>
       </div>
 

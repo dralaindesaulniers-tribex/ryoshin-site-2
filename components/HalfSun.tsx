@@ -56,6 +56,9 @@ export default function HalfSun({ variant = "scroll" }: { variant?: "scroll" | "
     <div
       aria-hidden="true"
       className={`sun-layer ${isScroll ? "fixed" : "absolute"} inset-0 overflow-hidden`}
+      /* screen blend: reads as red glow on dark, collapses to a faint warm
+         blush on light sections so it never stains light content */
+      style={{ mixBlendMode: "screen" }}
     >
       <div
         ref={sunRef}
