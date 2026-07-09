@@ -7,7 +7,9 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.ryoshin.solutions"),
+  // Netlify sets URL to the site's primary address (the netlify.app URL now,
+  // the custom domain once it is pointed), so share cards always resolve
+  metadataBase: new URL(process.env.URL || "https://www.ryoshin.solutions"),
   title: {
     default: "RYŌSHIN Solutions | Whole-hearted Solutions. Real-World Results.",
     template: "%s | RYŌSHIN Solutions",
