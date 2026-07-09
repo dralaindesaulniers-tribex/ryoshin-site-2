@@ -88,15 +88,15 @@ function Core() {
         <spriteMaterial
           map={glowTex}
           transparent
-          opacity={0.8}
+          opacity={0.42}
           blending={THREE.NormalBlending}
           depthWrite={false}
         />
       </sprite>
-      {/* solid red orb */}
+      {/* solid red orb, kept dim so the hero text always wins */}
       <mesh ref={orb}>
-        <sphereGeometry args={[0.34, 32, 32]} />
-        <meshBasicMaterial color={COLORS.shu} toneMapped={false} />
+        <sphereGeometry args={[0.32, 32, 32]} />
+        <meshBasicMaterial color={COLORS.shu} transparent opacity={0.82} toneMapped={false} />
       </mesh>
       {/* rotating half-ring, the RYŌSHIN mark */}
       <mesh ref={ring}>
@@ -124,6 +124,7 @@ function Pulses({
         pair: centerPairs[(Math.random() * centerPairs.length) | 0],
         t: Math.random(),
         speed: 0.004 + Math.random() * 0.006,
+        dir: Math.random() < 0.5 ? 1 : -1, // outbound from the core AND back in
       })),
     [centerPairs],
   );
@@ -138,14 +139,16 @@ function Pulses({
       if (s.t >= 1) {
         s.t = 0;
         s.pair = centerPairs[(Math.random() * centerPairs.length) | 0];
+        s.dir = Math.random() < 0.5 ? 1 : -1;
       }
       const a = positions[s.pair[0]];
       const b = positions[s.pair[1]];
       if (!a || !b) continue;
-      tmp.lerpVectors(a, b, s.t);
+      // dir 1: core outward. dir -1: back toward the core.
+      tmp.lerpVectors(a, b, s.dir === 1 ? s.t : 1 - s.t);
       dummy.position.copy(tmp);
       const alpha = Math.sin(s.t * Math.PI);
-      dummy.scale.setScalar(0.05 * alpha);
+      dummy.scale.setScalar(0.038 * alpha);
       dummy.updateMatrix();
       m.setMatrixAt(i, dummy.matrix);
     }
@@ -170,7 +173,7 @@ function Pulses({
       <meshBasicMaterial
         color={COLORS.paper}
         transparent
-        opacity={0.75}
+        opacity={0.4}
         depthWrite={false}
         toneMapped={false}
       />

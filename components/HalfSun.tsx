@@ -29,10 +29,12 @@ export default function HalfSun({ variant = "scroll" }: { variant?: "scroll" | "
           scrub: isMobile ? 0.5 : true,
         },
       });
-      gsap.set(sun, { yPercent: 42, opacity: 0.5 });
-      tl.to(sun, { yPercent: -22, opacity: 0.32, ease: "none", duration: 0.5 }).to(sun, {
-        yPercent: 46,
-        opacity: 0.16,
+      // page top: fully below the horizon (NOT visible in the home hero).
+      // it rises, faint, as you scroll into the page, then sets at the footer.
+      gsap.set(sun, { yPercent: 105, opacity: 0.3 });
+      tl.to(sun, { yPercent: 6, opacity: 0.26, ease: "none", duration: 0.5 }).to(sun, {
+        yPercent: 110,
+        opacity: 0.1,
         ease: "none",
         duration: 0.5,
       });
@@ -42,7 +44,7 @@ export default function HalfSun({ variant = "scroll" }: { variant?: "scroll" | "
       };
     });
     mm.add("(prefers-reduced-motion: reduce)", () => {
-      gsap.set(sun, { yPercent: 18, opacity: 0.6 });
+      gsap.set(sun, { yPercent: 62, opacity: 0.18 });
     });
 
     return () => mm.revert();
@@ -57,15 +59,12 @@ export default function HalfSun({ variant = "scroll" }: { variant?: "scroll" | "
     >
       <div
         ref={sunRef}
-        className={
-          isScroll
-            ? "absolute bottom-0 left-1/2 -translate-x-1/2"
-            : "absolute left-1/2 top-[14%] -translate-x-1/2"
-        }
+        /* static variant sits flush at the bottom of the hero section, faint */
+        className="absolute bottom-0 left-1/2 -translate-x-1/2"
         style={{
-          width: "min(90vw, 820px)",
+          width: isScroll ? "min(90vw, 820px)" : "min(78vw, 680px)",
           aspectRatio: "2 / 1",
-          opacity: isScroll ? undefined : 0.7,
+          opacity: isScroll ? undefined : 0.38,
         }}
       >
         <div className="halfsun-glow halfsun-pulse" />

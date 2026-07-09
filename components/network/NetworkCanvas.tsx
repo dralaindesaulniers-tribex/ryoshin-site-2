@@ -204,13 +204,13 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         const alpha = Math.sin(p.t * Math.PI);
         const c = p.color;
         const glow = ctx!.createRadialGradient(x, y, 0, x, y, 11);
-        glow.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.6 * alpha})`);
+        glow.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${0.35 * alpha})`);
         glow.addColorStop(1, `rgba(${c[0]},${c[1]},${c[2]},0)`);
         ctx!.fillStyle = glow;
         ctx!.beginPath();
         ctx!.arc(x, y, 11, 0, Math.PI * 2);
         ctx!.fill();
-        ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.95 * alpha})`;
+        ctx!.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${0.55 * alpha})`;
         ctx!.beginPath();
         ctx!.arc(x, y, 1.5, 0, Math.PI * 2);
         ctx!.fill();
@@ -226,19 +226,19 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
         if (n.center) {
           const breathe = 0.85 + 0.15 * Math.sin(time * 0.0009);
           const g = ctx!.createRadialGradient(x, y, 0, x, y, 95 * breathe);
-          g.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.5)`);
-          g.addColorStop(0.35, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.16)`);
+          g.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.3)`);
+          g.addColorStop(0.35, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.1)`);
           g.addColorStop(1, "rgba(0,0,0,0)");
           ctx!.fillStyle = g;
           ctx!.beginPath();
           ctx!.arc(x, y, 95 * breathe, 0, Math.PI * 2);
           ctx!.fill();
 
-          // glowing red orb, brand red, no white center
+          // glowing red orb, brand red, no white center, kept dim
           const orbR = n.r * 1.7 * (0.92 + 0.08 * Math.sin(time * 0.0016));
           const core = ctx!.createRadialGradient(x, y, 0, x, y, orbR);
-          core.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},1)`);
-          core.addColorStop(0.55, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.9)`);
+          core.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.85)`);
+          core.addColorStop(0.55, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.7)`);
           core.addColorStop(1, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0)`);
           ctx!.fillStyle = core;
           ctx!.beginPath();
