@@ -18,7 +18,7 @@ export default function AboutPage() {
       {/* ============ HERO: heading centered, headline split to two lines
           with visual space (Ryan punch list) ============ */}
       <section className="bg-ink text-paper relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 text-center md:px-10">
-        <HalfSun />
+        <HalfSun variant="static" />
         <div className="relative z-10 flex w-full flex-col items-center">
         <p className="eyebrow text-paper/50">About Us</p>
         <h1 className="display mt-10" style={{ fontSize: "clamp(2.2rem, 4.6vw, 4.25rem)" }}>

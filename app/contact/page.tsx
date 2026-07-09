@@ -15,7 +15,7 @@ export default function ContactPage() {
     <main>
       {/* Hero: "How can we help?" + chat concierge over the half sun */}
       <section className="bg-ink text-paper relative flex flex-col items-center justify-center overflow-hidden px-6 pt-40 pb-20 text-center md:px-10 md:pt-48">
-        <HalfSun />
+        <HalfSun variant="static" />
         <div className="relative z-10 flex w-full max-w-[1000px] flex-col items-center">
           <p className="eyebrow text-paper/50">Contact</p>
           <h1 className="display mt-8" style={{ fontSize: "clamp(2.4rem, 5vw, 4.5rem)" }}>

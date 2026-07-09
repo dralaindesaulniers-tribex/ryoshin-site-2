@@ -110,6 +110,51 @@ body {
 }
 
 /* ============================================
+   RYŌSHIN half-sun mark: glowing pulsing semicircle (the logo).
+   A defined half circle (flat bottom, domed top) with a soft glow.
+   ============================================ */
+.halfsun-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px 9999px 0 0;
+  background: radial-gradient(
+    130% 200% at 50% 100%,
+    var(--color-shu) 0%,
+    var(--color-shu) 44%,
+    rgba(196, 58, 47, 0.5) 64%,
+    rgba(196, 58, 47, 0) 84%
+  );
+}
+.halfsun-glow {
+  position: absolute;
+  inset: -14% -14% 0 -14%;
+  border-radius: 9999px 9999px 0 0;
+  background: radial-gradient(100% 160% at 50% 100%, rgba(196, 58, 47, 0.7), rgba(196, 58, 47, 0) 70%);
+  filter: blur(48px);
+}
+
+@keyframes sunPulse {
+  0%,
+  100% {
+    opacity: 0.88;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.035);
+  }
+}
+.halfsun-pulse {
+  animation: sunPulse 4.2s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .halfsun-pulse {
+    animation: none;
+  }
+}
+
+/* ============================================
    Panel system (hybrid directive, July 2026):
    glass modules on dark sections, contained
    solid modules on light sections.

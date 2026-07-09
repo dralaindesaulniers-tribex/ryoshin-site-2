@@ -58,9 +58,10 @@ function makeGlowTexture() {
   c.width = c.height = s;
   const g = c.getContext("2d")!;
   const grad = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
-  grad.addColorStop(0, "rgba(255,255,255,1)");
-  grad.addColorStop(0.4, "rgba(255,255,255,0.35)");
-  grad.addColorStop(1, "rgba(255,255,255,0)");
+  // brand-red glow, never white
+  grad.addColorStop(0, "rgba(196,58,47,0.9)");
+  grad.addColorStop(0.35, "rgba(196,58,47,0.4)");
+  grad.addColorStop(1, "rgba(196,58,47,0)");
   g.fillStyle = grad;
   g.fillRect(0, 0, s, s);
   return new THREE.CanvasTexture(c);
@@ -69,12 +70,16 @@ function makeGlowTexture() {
 function Core() {
   const ring = useRef<THREE.Mesh>(null);
   const glow = useRef<THREE.Sprite>(null);
+  const orb = useRef<THREE.Mesh>(null);
   const glowTex = useMemo(makeGlowTexture, []);
 
   useFrame(({ clock }) => {
     const t = clock.elapsedTime;
     if (ring.current) ring.current.rotation.z = t * 0.12;
+    // glowing, pulsing red orb, no white center
+    const pulse = 0.9 + 0.1 * Math.sin(t * 1.4);
     if (glow.current) glow.current.scale.setScalar(4.6 * (0.85 + 0.15 * Math.sin(t * 0.9)));
+    if (orb.current) orb.current.scale.setScalar(pulse);
   });
 
   return (
@@ -82,26 +87,94 @@ function Core() {
       <sprite ref={glow} scale={4.6}>
         <spriteMaterial
           map={glowTex}
-          color={COLORS.shu}
           transparent
-          opacity={0.5}
-          blending={THREE.AdditiveBlending}
+          opacity={0.8}
+          blending={THREE.NormalBlending}
           depthWrite={false}
         />
       </sprite>
-      <mesh>
-        <sphereGeometry args={[0.28, 32, 32]} />
-        <meshBasicMaterial color={new THREE.Color("#FFD6C8")} />
+      {/* solid red orb */}
+      <mesh ref={orb}>
+        <sphereGeometry args={[0.34, 32, 32]} />
+        <meshBasicMaterial color={COLORS.shu} toneMapped={false} />
       </mesh>
-      <mesh scale={1.9}>
-        <sphereGeometry args={[0.28, 32, 32]} />
-        <meshBasicMaterial color={COLORS.shu} transparent opacity={0.35} depthWrite={false} />
-      </mesh>
+      {/* rotating half-ring, the RYŌSHIN mark */}
       <mesh ref={ring}>
         <torusGeometry args={[0.95, 0.022, 12, 80, Math.PI]} />
         <meshBasicMaterial color={COLORS.shu} />
       </mesh>
     </group>
+  );
+}
+
+// Faint light flashes traveling along the center spokes (spec 7.1).
+function Pulses({
+  positions,
+  centerPairs,
+}: {
+  positions: THREE.Vector3[];
+  centerPairs: [number, number][];
+}) {
+  const COUNT = 16;
+  const mesh = useRef<THREE.InstancedMesh>(null);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const state = useMemo(
+    () =>
+      Array.from({ length: COUNT }, () => ({
+        pair: centerPairs[(Math.random() * centerPairs.length) | 0],
+        t: Math.random(),
+        speed: 0.004 + Math.random() * 0.006,
+      })),
+    [centerPairs],
+  );
+  const tmp = useMemo(() => new THREE.Vector3(), []);
+
+  useFrame(() => {
+    const m = mesh.current;
+    if (!m || !centerPairs.length) return;
+    for (let i = 0; i < COUNT; i++) {
+      const s = state[i];
+      s.t += s.speed;
+      if (s.t >= 1) {
+        s.t = 0;
+        s.pair = centerPairs[(Math.random() * centerPairs.length) | 0];
+      }
+      const a = positions[s.pair[0]];
+      const b = positions[s.pair[1]];
+      if (!a || !b) continue;
+      tmp.lerpVectors(a, b, s.t);
+      dummy.position.copy(tmp);
+      const alpha = Math.sin(s.t * Math.PI);
+      dummy.scale.setScalar(0.05 * alpha);
+      dummy.updateMatrix();
+      m.setMatrixAt(i, dummy.matrix);
+    }
+    m.instanceMatrix.needsUpdate = true;
+  });
+
+  return (
+    <instancedMesh
+      ref={(node) => {
+        mesh.current = node;
+        // start every instance collapsed so idle instances never show at origin
+        if (node) {
+          dummy.scale.setScalar(0);
+          dummy.updateMatrix();
+          for (let i = 0; i < COUNT; i++) node.setMatrixAt(i, dummy.matrix);
+          node.instanceMatrix.needsUpdate = true;
+        }
+      }}
+      args={[undefined, undefined, COUNT]}
+    >
+      <sphereGeometry args={[1, 8, 8]} />
+      <meshBasicMaterial
+        color={COLORS.paper}
+        transparent
+        opacity={0.75}
+        depthWrite={false}
+        toneMapped={false}
+      />
+    </instancedMesh>
   );
 }
 
@@ -214,7 +287,7 @@ function Rig() {
 }
 
 function Scene() {
-  const { anon, categoryPositions, allPositions, pairs } = useMemo(() => {
+  const { anon, categoryPositions, allPositions, pairs, centerPairs } = useMemo(() => {
     // category label nodes on the outer field
     const categoryPositions: THREE.Vector3[] = CATEGORIES.map((_, i) => {
       const a = (i / CATEGORIES.length) * Math.PI * 2 + 0.3;
@@ -258,7 +331,9 @@ function Scene() {
       }
     }
 
-    return { anon, categoryPositions, allPositions, pairs };
+    const centerPairs = pairs.filter((p) => p[0] === 0 || p[1] === 0);
+
+    return { anon, categoryPositions, allPositions, pairs, centerPairs };
   }, []);
 
   useFrame(({ clock }) => {
@@ -280,6 +355,7 @@ function Scene() {
       <Core />
       <AnonNodes defs={anon} />
       <Edges positions={allPositions} pairs={pairs} />
+      <Pulses positions={allPositions} centerPairs={centerPairs} />
       {CATEGORIES.map((label, i) => (
         <LabelNode key={label} label={label} position={categoryPositions[i]} />
       ))}

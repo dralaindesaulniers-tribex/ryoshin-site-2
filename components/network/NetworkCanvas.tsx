@@ -234,13 +234,15 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           ctx!.arc(x, y, 95 * breathe, 0, Math.PI * 2);
           ctx!.fill();
 
-          const core = ctx!.createRadialGradient(x, y, 0, x, y, n.r * 1.6);
-          core.addColorStop(0, "rgba(255, 214, 200, 0.98)");
-          core.addColorStop(0.5, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.95)`);
+          // glowing red orb, brand red, no white center
+          const orbR = n.r * 1.7 * (0.92 + 0.08 * Math.sin(time * 0.0016));
+          const core = ctx!.createRadialGradient(x, y, 0, x, y, orbR);
+          core.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},1)`);
+          core.addColorStop(0.55, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.9)`);
           core.addColorStop(1, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0)`);
           ctx!.fillStyle = core;
           ctx!.beginPath();
-          ctx!.arc(x, y, n.r * 1.6, 0, Math.PI * 2);
+          ctx!.arc(x, y, orbR, 0, Math.PI * 2);
           ctx!.fill();
 
           // rotating half-ring, one turn ~52s

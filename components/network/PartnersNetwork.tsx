@@ -176,13 +176,15 @@ export default function PartnersNetwork() {
           ctx!.beginPath();
           ctx!.arc(n.sx, n.sy, 70 * breathe, 0, Math.PI * 2);
           ctx!.fill();
-          const core = ctx!.createRadialGradient(n.sx, n.sy, 0, n.sx, n.sy, n.r * 1.6);
-          core.addColorStop(0, "rgba(255,214,200,0.98)");
-          core.addColorStop(0.5, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.95)`);
+          // glowing red orb, brand red, no white center
+          const orbR = n.r * 1.7 * breathe;
+          const core = ctx!.createRadialGradient(n.sx, n.sy, 0, n.sx, n.sy, orbR);
+          core.addColorStop(0, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},1)`);
+          core.addColorStop(0.55, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0.9)`);
           core.addColorStop(1, `rgba(${SHU[0]},${SHU[1]},${SHU[2]},0)`);
           ctx!.fillStyle = core;
           ctx!.beginPath();
-          ctx!.arc(n.sx, n.sy, n.r * 1.6, 0, Math.PI * 2);
+          ctx!.arc(n.sx, n.sy, orbR, 0, Math.PI * 2);
           ctx!.fill();
           const ringR = n.r * 3.2;
           const rot = time * 0.00012;

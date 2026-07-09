@@ -19,7 +19,7 @@ export default function PageHero({
 }) {
   return (
     <section className="bg-ink text-paper relative flex min-h-[92svh] flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 text-center md:px-10">
-      <HalfSun />
+      <HalfSun variant="static" />
       <div className="relative z-10 flex w-full max-w-[1000px] flex-col items-center">
         <p className="eyebrow text-paper/50">{eyebrow}</p>
         <blockquote
