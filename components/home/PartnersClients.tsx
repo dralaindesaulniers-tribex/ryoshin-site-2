@@ -17,7 +17,8 @@ export default function PartnersClients() {
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
         {/* asymmetric header, intentional grid-break: headline pushes right */}
         <div className="grid gap-6 md:grid-cols-12">
-          <p className="eyebrow text-shu md:col-span-4 md:pt-4">
+          <p className="eyebrow text-ink/45 md:col-span-4 md:pt-4">
+            <span className="eyebrow-num">01</span>
             {partnersClients.eyebrow}
           </p>
           <h2
@@ -29,11 +30,11 @@ export default function PartnersClients() {
         </div>
 
         {/* Partners: large marks */}
-        <ul className="mt-16 grid gap-px overflow-hidden rounded-[2px] bg-(--color-line-light) sm:grid-cols-3 md:mt-20">
+        <ul data-stagger-children className="mt-16 grid gap-6 sm:grid-cols-3 md:mt-20">
           {partners.map((p) => (
             <li
               key={p.id}
-              className="bg-paper-soft flex min-h-44 flex-col justify-between p-8 md:min-h-52 md:p-10"
+              className="panel-light flex min-h-44 flex-col justify-between p-8 md:min-h-52 md:p-10"
             >
               {/* TODO-ASSET: partner logos missing, typographic marks until provided */}
               <span className="display text-ink text-2xl md:text-3xl">{p.name}</span>

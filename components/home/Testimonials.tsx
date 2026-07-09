@@ -2,8 +2,8 @@ import Image from "next/image";
 import { testimonials } from "@/content/site";
 
 /**
- * Testimonials (spec 5.6). Two live quotes now; five slots wired and
- * waiting on collection (a human task). Pending entries render nothing.
+ * Testimonials (spec 5.6): contained light modules, asymmetric offset.
+ * Five slots wired and waiting on collection; pending entries render nothing.
  */
 export default function Testimonials() {
   const live = testimonials.filter((t) => !t.pending && t.quote);
@@ -11,23 +11,22 @@ export default function Testimonials() {
   return (
     <section className="bg-paper section-pad">
       <div className="mx-auto max-w-[1200px] px-6 md:px-10">
-        <p className="eyebrow text-shu">What people say</p>
-        <div className="mt-14 grid gap-16 md:grid-cols-12 md:gap-10">
+        <p className="eyebrow text-ink/45">
+          <span className="eyebrow-num">05</span>What people say{/* section 05 */}
+        </p>
+        <div className="mt-14 grid items-start gap-6 md:grid-cols-12">
           {live.map((t, i) => (
             <figure
               key={t.name}
-              /* offset second column for asymmetry */
-              className={
-                i % 2 === 0 ? "md:col-span-6" : "md:col-span-6 md:pt-20"
-              }
+              className={`panel-light p-9 md:col-span-6 md:p-12 ${i % 2 === 1 ? "md:mt-16" : ""}`}
             >
               <blockquote
                 className="font-display text-ink/90 leading-snug"
-                style={{ fontSize: "var(--text-display-xs)", fontWeight: 400 }}
+                style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.75rem)", fontWeight: 400 }}
               >
                 &ldquo;{t.quote}&rdquo;
               </blockquote>
-              <figcaption className="mt-8 flex items-center gap-4">
+              <figcaption className="mt-8 flex items-center gap-4 border-t border-(--color-line-light) pt-6">
                 {t.photo && (
                   <Image
                     src={t.photo}

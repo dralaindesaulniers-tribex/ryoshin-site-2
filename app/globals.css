@@ -108,3 +108,45 @@ body {
 .sun-layer {
   pointer-events: none;
 }
+
+/* ============================================
+   Panel system (hybrid directive, July 2026):
+   glass modules on dark sections, contained
+   solid modules on light sections.
+   ============================================ */
+
+/* frosted module on dark surfaces; pair with a .glow-shu sibling behind it */
+.panel-dark {
+  background: color-mix(in srgb, var(--color-ink-soft) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-line-dark);
+  border-radius: 2px;
+}
+
+/* contained solid module on light surfaces */
+.panel-light {
+  background: var(--color-paper-soft);
+  border: 1px solid var(--color-line-light);
+  border-radius: 2px;
+}
+
+/* soft vermilion luminance behind glass panels so the blur reads as depth */
+.glow-shu {
+  position: absolute;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(196, 58, 47, 0.22) 0%,
+    rgba(196, 58, 47, 0.07) 45%,
+    transparent 70%
+  );
+  filter: blur(40px);
+}
+
+/* numbered eyebrow, OS-module style: "01 / Label" */
+.eyebrow-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--color-shu);
+  margin-right: 0.75em;
+}
