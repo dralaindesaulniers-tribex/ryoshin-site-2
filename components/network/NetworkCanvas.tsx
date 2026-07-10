@@ -32,6 +32,7 @@ type NetNode = {
   driftS: number;
   label: string | null;
   labelAlpha: number;
+  beacon?: boolean;
 };
 
 function rand(a: number, b: number) {
@@ -46,7 +47,7 @@ function rand(a: number, b: number) {
  * is off-center. zoom 1 = normal view; the scene renders through this
  * transform every frame, so it stays vector-crisp at any magnification.
  */
-export const heroView = { zoom: 1, fx: 0.42, fy: 0.38 };
+export const heroView = { zoom: 1, fx: 0.42, fy: 0.38, whiteout: 0 };
 
 export default function NetworkCanvas({ interactive = true }: { interactive?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -63,6 +64,7 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
     let H = 0;
     let DPR = 1;
     let nodes: NetNode[] = [];
+    let beaconIdx = -1;
     let edges: [number, number, number][] = [];
     let pulses: { edge: [number, number, number]; t: number; speed: number; flip: boolean; color: Vec3 }[] = [];
     let raf = 0;
@@ -164,6 +166,25 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           }
         }
       }
+
+      // The beacon: the bright paper-white star the fly-through dives into.
+      // Placed below-right of the camera's focal point so the dive carries
+      // it toward the lower edge, swelling as it approaches, before its
+      // light takes over the screen (see whiteout in frame()).
+      beaconIdx = nodes.length;
+      nodes.push({
+        bx: cx + W * 0.0,
+        by: cy + H * 0.02,
+        r: 4.5,
+        center: false,
+        beacon: true,
+        color: PAPER,
+        phase: Math.random() * Math.PI * 2,
+        driftA: 5,
+        driftS: 0.0002,
+        label: null,
+        labelAlpha: 0,
+      });
 
       // Edges: nearby links + guaranteed spokes from center
       const maxDist = isMobile ? 125 : 165;
@@ -319,6 +340,21 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           ctx!.arc(x, y, ringR, rot, rot + Math.PI);
           ctx!.stroke();
           ctx!.shadowBlur = 0;
+        } else if (n.beacon) {
+          // the white star: brightest thing in the field, soft wide halo
+          const haloR = n.r * 12;
+          const halo = ctx!.createRadialGradient(x, y, 0, x, y, haloR);
+          halo.addColorStop(0, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${0.55 + 0.1 * flicker})`);
+          halo.addColorStop(0.3, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0.18)`);
+          halo.addColorStop(1, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0)`);
+          ctx!.fillStyle = halo;
+          ctx!.beginPath();
+          ctx!.arc(x, y, haloR, 0, Math.PI * 2);
+          ctx!.fill();
+          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0.95)`;
+          ctx!.beginPath();
+          ctx!.arc(x, y, n.r, 0, Math.PI * 2);
+          ctx!.fill();
         } else {
           const haloR = n.r * (n.r > 2.8 ? 6 : 4.5);
           const halo = ctx!.createRadialGradient(x, y, 0, x, y, haloR);
@@ -344,6 +380,32 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           const lx = x + n.r + 8 + tw > W - 12 ? x - n.r - 8 - tw : x + n.r + 8;
           ctx!.fillText(text, lx, y + 4);
         }
+      }
+
+      // whiteout: at the climax of the fly-through the beacon's light takes
+      // the screen. Drawn as a radial gradient centered on the beacon's
+      // actual screen position, so the white radiates from the orb we are
+      // flying into: no edges, no seams. At full strength the whole
+      // viewport is solid paper, matching the next section's background.
+      if (heroView.whiteout > 0.001 && beaconIdx >= 0) {
+        const w = heroView.whiteout;
+        ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
+        const [bpx, bpy] = pos[beaconIdx];
+        const sx = vfx + (bpx - vfx) * zoom;
+        const sy = vfy + (bpy - vfy) * zoom;
+        const farthest = Math.max(
+          Math.hypot(sx, sy),
+          Math.hypot(W - sx, sy),
+          Math.hypot(sx, H - sy),
+          Math.hypot(W - sx, H - sy),
+        );
+        const r = Math.max(60, (farthest / 0.55) * Math.pow(w, 1.15));
+        const grad = ctx!.createRadialGradient(sx, sy, 0, sx, sy, r);
+        grad.addColorStop(0, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${Math.min(1, w * 2.2)})`);
+        grad.addColorStop(0.55, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${Math.min(1, w * 1.5)})`);
+        grad.addColorStop(1, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0)`);
+        ctx!.fillStyle = grad;
+        ctx!.fillRect(0, 0, W, H);
       }
 
       if (!reduceMotion && time - lastPulse > rand(180, 520) && pulses.length < 20) {

@@ -82,21 +82,10 @@ export default function MotionEffects() {
         // act 2: fly-through. power2.in = the approach accelerates, like
         // moving toward the field and slipping past it
         tl.to(heroView, { zoom: 7, duration: 0.6, ease: "power2.in" }, 0.4);
-        const heroCanvas = heroPin.querySelector("canvas");
-        if (heroCanvas) {
-          tl.to(heroCanvas, { autoAlpha: 0.25, duration: 0.12, ease: "none" }, 0.88);
-        }
-        // the bloom floods the bottom with paper as the dive climaxes, so
-        // the release hands off white-on-white into the next section
-        const bloom = heroPin.querySelector<HTMLElement>("[data-hero-bloom]");
-        if (bloom) {
-          tl.fromTo(
-            bloom,
-            { opacity: 0, scale: 0.7 },
-            { opacity: 1, scale: 1.15, duration: 0.34, ease: "power1.in" },
-            0.64,
-          );
-        }
+        // climax: the white beacon's light takes the screen (rendered
+        // inside the canvas, radiating from the orb itself). At release the
+        // viewport is solid paper, same as the next section: seamless.
+        tl.to(heroView, { whiteout: 1, duration: 0.3, ease: "power1.in" }, 0.7);
       }
 
       // fade-rise for eyebrows, display headings, and marked elements
@@ -223,8 +212,9 @@ export default function MotionEffects() {
 
     return () => {
       mm.revert();
-      // belt and suspenders: never leave the fly-through camera zoomed
+      // belt and suspenders: never leave the fly-through camera engaged
       heroView.zoom = 1;
+      heroView.whiteout = 0;
     };
   }, [pathname]);
 

@@ -5,11 +5,13 @@ Dates are YYYY-MM-DD.
 
 ## 2026-07-10
 
-Hero fly-through, seamless white handoff (Alain):
+Hero fly-through, seamless white handoff (Alain, take 2):
 
-- The fly-through now climaxes in a paper-white bloom that floods up from the
-  bottom of the screen. The next section is the same paper color, so the pin
-  release is white-on-white and the abrupt stop is gone.
+- The DOM bloom had visible band edges; replaced with a white "beacon" star
+  drawn inside the network itself. The dive flies toward it, it swells like a
+  sun, and its light (a canvas radial centered on the orb) engulfs the screen
+  edge-free until the viewport is solid paper. The next section shares that
+  paper, so the release is invisible.
 
 Hero fly-through, act 2 (Alain):
 
