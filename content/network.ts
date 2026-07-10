@@ -111,7 +111,7 @@ export const networkValues = [
   "Passion",
   "Mission",
   "Inspiration",
-  "Fundamentals",
+  "Essentialism",
   "Love",
   "Kindness",
   "Family",

@@ -18,7 +18,8 @@ Ryan's critique round 2 (PDF) plus Alain's hero contrast note:
 - "Co-pilot" added to Ryan's self-given titles in the founder bio text.
 - Logo PNGs trimmed of transparent padding so nav and footer logos sit flush.
 - Contact page bottom white space tightened on mobile.
-- Network value label "Fundamentalism" renamed to "Fundamentals" (Alain).
+- Network value label "Fundamentalism" renamed to "Essentialism", the book
+  of Ryan's it references (via a brief stop at "Fundamentals").
 
 Earlier today:
 
