@@ -86,6 +86,17 @@ export default function MotionEffects() {
         if (heroCanvas) {
           tl.to(heroCanvas, { autoAlpha: 0.25, duration: 0.12, ease: "none" }, 0.88);
         }
+        // the bloom floods the bottom with paper as the dive climaxes, so
+        // the release hands off white-on-white into the next section
+        const bloom = heroPin.querySelector<HTMLElement>("[data-hero-bloom]");
+        if (bloom) {
+          tl.fromTo(
+            bloom,
+            { opacity: 0, scale: 0.7 },
+            { opacity: 1, scale: 1.15, duration: 0.34, ease: "power1.in" },
+            0.64,
+          );
+        }
       }
 
       // fade-rise for eyebrows, display headings, and marked elements

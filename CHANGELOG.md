@@ -5,6 +5,12 @@ Dates are YYYY-MM-DD.
 
 ## 2026-07-10
 
+Hero fly-through, seamless white handoff (Alain):
+
+- The fly-through now climaxes in a paper-white bloom that floods up from the
+  bottom of the screen. The next section is the same paper color, so the pin
+  release is white-on-white and the abrupt stop is gone.
+
 Hero fly-through, act 2 (Alain):
 
 - After the chat centers, continued scrolling now flies the camera INTO the

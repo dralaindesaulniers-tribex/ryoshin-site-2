@@ -37,6 +37,20 @@ export default function Hero() {
               "radial-gradient(ellipse 62% 50% at 50% 50%, rgba(16,17,18,0.62) 0%, rgba(16,17,18,0) 72%)",
           }}
         />
+        {/* the bloom: paper-colored light that floods up from the bottom at
+            the end of the fly-through. The next section is the same paper,
+            so the pin release is seamless, white meets white */}
+        <div
+          data-hero-bloom
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            opacity: 0,
+            transformOrigin: "50% 100%",
+            background:
+              "radial-gradient(ellipse 150% 130% at 50% 115%, #F4F1EA 0%, #F4F1EA 42%, rgba(244,241,234,0) 78%)",
+          }}
+        />
         <div
           className="relative z-10 flex w-full max-w-[1200px] flex-col items-center text-center"
           style={{ textShadow: "0 1px 4px rgba(16,17,18,0.9), 0 0 30px rgba(16,17,18,0.7)" }}
