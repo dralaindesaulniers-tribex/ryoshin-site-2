@@ -17,7 +17,7 @@ export const contact = {
   phone: "778-991-3747",
   phoneHref: "tel:+17789913747",
   // contact form hands off to WhatsApp (Ryan's critique, July 2026).
-  // CONFIRM with Ryan that this number is WhatsApp-enabled.
+  // number confirmed by Alain: same as the listed business phone.
   whatsapp: "17789913747",
   email: "hello@ryoshin.ca",
   formRecipient: "ryan@ryoshin.ca",
