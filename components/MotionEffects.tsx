@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { heroView } from "@/components/network/NetworkCanvas";
 
 /**
  * Site-wide scroll choreography (spec 2.4). One engine, consistent moves:
@@ -43,9 +44,12 @@ export default function MotionEffects() {
         );
       });
 
-      // pinned hero intro (home): headline and subhead exit, the chat glides
-      // to the vertical center, and the scrim lifts so the network fills the
-      // screen at full strength. Pin releases, page scrolls on as normal.
+      // pinned hero intro (home), two acts:
+      //   1. headline and subhead exit, the chat glides to the vertical
+      //      center, the scrim lifts so the network fills the screen
+      //   2. fly-through: the camera accelerates into the field, nodes
+      //      stream past the edges, the orb swells and slides off past the
+      //      corner. Then the pin releases and the page scrolls on.
       const heroPin = document.querySelector<HTMLElement>("[data-hero-pin]");
       const heroChat = heroPin?.querySelector<HTMLElement>("[data-hero-chat]");
       if (heroPin && heroChat) {
@@ -64,16 +68,24 @@ export default function MotionEffects() {
           scrollTrigger: {
             trigger: heroPin,
             start: "top top",
-            end: "+=85%",
+            end: "+=170%",
             pin: true,
             scrub: true,
             anticipatePin: 1,
             invalidateOnRefresh: true,
           },
         });
-        tl.to(fadeEls, { autoAlpha: 0, y: -48, duration: 0.45, ease: "power1.in" }, 0);
-        if (scrim) tl.to(scrim, { autoAlpha: 0, duration: 0.75, ease: "none" }, 0);
-        tl.to(heroChat, { y: chatShift, duration: 0.8, ease: "power1.inOut" }, 0.1);
+        // act 1: text exits, chat centers, scrim lifts
+        tl.to(fadeEls, { autoAlpha: 0, y: -48, duration: 0.2, ease: "power1.in" }, 0);
+        if (scrim) tl.to(scrim, { autoAlpha: 0, duration: 0.35, ease: "none" }, 0);
+        tl.to(heroChat, { y: chatShift, duration: 0.35, ease: "power1.inOut" }, 0.05);
+        // act 2: fly-through. power2.in = the approach accelerates, like
+        // moving toward the field and slipping past it
+        tl.to(heroView, { zoom: 7, duration: 0.6, ease: "power2.in" }, 0.4);
+        const heroCanvas = heroPin.querySelector("canvas");
+        if (heroCanvas) {
+          tl.to(heroCanvas, { autoAlpha: 0.25, duration: 0.12, ease: "none" }, 0.88);
+        }
       }
 
       // fade-rise for eyebrows, display headings, and marked elements
@@ -198,7 +210,11 @@ export default function MotionEffects() {
     // recalc positions after route swap
     ScrollTrigger.refresh();
 
-    return () => mm.revert();
+    return () => {
+      mm.revert();
+      // belt and suspenders: never leave the fly-through camera zoomed
+      heroView.zoom = 1;
+    };
   }, [pathname]);
 
   return null;

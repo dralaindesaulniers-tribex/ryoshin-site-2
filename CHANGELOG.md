@@ -5,6 +5,14 @@ Dates are YYYY-MM-DD.
 
 ## 2026-07-10
 
+Hero fly-through, act 2 (Alain):
+
+- After the chat centers, continued scrolling now flies the camera INTO the
+  network: nodes stream past the edges, lines thicken, and the red orb swells
+  and slides off past the corner (off-center, like a fly-by) before the page
+  releases. Pin lengthened to 170vh so the whole moment breathes. True camera
+  zoom inside the canvas, crisp at any magnification; labels bow out early.
+
 Pinned hero intro (Alain):
 
 - Scrolling the home hero now pins it for a beat: headline and subhead exit,

@@ -38,6 +38,16 @@ function rand(a: number, b: number) {
   return a + Math.random() * (b - a);
 }
 
+/**
+ * Camera for the hero fly-through (Alain, July 2026): MotionEffects tweens
+ * zoom during the pinned intro so the field streams toward the viewer and
+ * the orb swells and slides off past the corner. fx/fy is the focal point as
+ * a fraction of the viewport, deliberately up-left of the orb so the fly-by
+ * is off-center. zoom 1 = normal view; the scene renders through this
+ * transform every frame, so it stays vector-crisp at any magnification.
+ */
+export const heroView = { zoom: 1, fx: 0.42, fy: 0.38 };
+
 export default function NetworkCanvas({ interactive = true }: { interactive?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -186,14 +196,14 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
       pulses.push({ edge, t: 0, speed: rand(0.0014, 0.005), flip: Math.random() < 0.5, color });
     };
 
-    const nodePos = (n: NetNode, time: number): Vec => {
+    const nodePos = (n: NetNode, time: number, mx: number, my: number): Vec => {
       const dx = Math.cos(time * n.driftS + n.phase) * n.driftA;
       const dy = Math.sin(time * n.driftS * 1.3 + n.phase) * n.driftA;
       let x = n.bx + dx;
       let y = n.by + dy;
       if (interactive) {
-        const mdx = x - mouse.x;
-        const mdy = y - mouse.y;
+        const mdx = x - mx;
+        const mdy = y - my;
         const md = Math.hypot(mdx, mdy);
         if (md < 180 && md > 0.001) {
           const push = (1 - md / 180) * 14;
@@ -205,8 +215,27 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
     };
 
     function frame(time: number) {
+      // clear in screen space, then render the whole scene through the
+      // fly-through camera (scaled around the focal point)
+      ctx!.setTransform(DPR, 0, 0, DPR, 0, 0);
       ctx!.clearRect(0, 0, W, H);
-      const pos = nodes.map((n) => nodePos(n, time));
+      const zoom = heroView.zoom;
+      const vfx = W * heroView.fx;
+      const vfy = H * heroView.fy;
+      ctx!.setTransform(
+        DPR * zoom,
+        0,
+        0,
+        DPR * zoom,
+        DPR * vfx * (1 - zoom),
+        DPR * vfy * (1 - zoom),
+      );
+      // labels bow out early in the fly-through so words never smear past
+      const labelZoomFade = Math.max(0, Math.min(1, 1 - (zoom - 1) * 1.8));
+      // mouse mapped back into scene space while zoomed
+      const mwx = vfx + (mouse.x - vfx) / zoom;
+      const mwy = vfy + (mouse.y - vfy) / zoom;
+      const pos = nodes.map((n) => nodePos(n, time, mwx, mwy));
 
       // edges
       ctx!.lineWidth = 0.6;
@@ -305,8 +334,8 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           ctx!.fill();
         }
 
-        if (n.label) {
-          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${n.labelAlpha})`;
+        if (n.label && n.labelAlpha * labelZoomFade > 0.02) {
+          ctx!.fillStyle = `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${n.labelAlpha * labelZoomFade})`;
           ctx!.font = `300 11px "General Sans", "Helvetica Neue", Arial, sans-serif`;
           const text = n.label.toUpperCase();
           // flip to the left side of the node near the right edge so words
