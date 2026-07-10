@@ -16,6 +16,9 @@ export const contact = {
   address: ["242 - 1489 Marine Drive", "West Vancouver, BC V7T 1B8", "Canada"],
   phone: "778-991-3747",
   phoneHref: "tel:+17789913747",
+  // contact form hands off to WhatsApp (Ryan's critique, July 2026).
+  // CONFIRM with Ryan that this number is WhatsApp-enabled.
+  whatsapp: "17789913747",
   email: "hello@ryoshin.ca",
   formRecipient: "ryan@ryoshin.ca",
   socials: [
@@ -184,9 +187,11 @@ export const about = {
     eyebrow: "The Founder",
     headline: "I'm Ryan Yada.",
     title: "Principal Progressor · Co-pilot",
-    photo: "/images/ryan-yada.jpg",
+    // cropped per Ryan's July 2026 critique: head to mid-shin, no shoes,
+    // tighter perspective. original kept at /images/ryan-yada.jpg
+    photo: "/images/ryan-yada-crop.jpg",
     paragraphs: [
-      'I\'ve never been drawn to doing things the "standard" way. Throughout my career, I\'ve given myself titles like Solution Investor, Imagineer, and now Principal Progressor, because what I do doesn\'t fit neatly into a box.',
+      'I\'ve never been drawn to doing things the "standard" way. Throughout my career, I\'ve given myself titles like Solution Investor, Imagineer, Co-pilot, and now Principal Progressor, because what I do doesn\'t fit neatly into a box.',
       "My work has taken me from leading large-scale projects in the corporate world to helping cultural institutions preserve heritage stories, to building innovative platforms that connect communities. Along the way, I've learned that progress isn't just about speed or efficiency. It's about moving in the right direction, for the right reasons.",
       "I approach every project with curiosity, creativity, and a strong commitment to integrity. My goal is to connect people, ideas, and technology in a way that makes a measurable difference, not just for today but for years to come.",
     ],

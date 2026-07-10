@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import ChatInput from "@/components/ChatInput";
 import ContactForm from "@/components/ContactForm";
 import HalfSun from "@/components/HalfSun";
 import { contact, contactPage } from "@/content/site";
@@ -28,14 +27,12 @@ export default function ContactPage() {
           <p className="text-paper/50 mt-6 max-w-[48ch]" style={{ fontSize: "var(--text-body-lg)" }}>
             {contactPage.body}
           </p>
-          <div className="mt-12 flex w-full justify-center">
-            <ChatInput />
-          </div>
         </div>
       </section>
 
-      {/* Details + form */}
-      <section className="bg-paper section-pad">
+      {/* Details + form. Bottom padding tighter on mobile: the form runs long
+          there and the full section-pad read as dead white space (Ryan) */}
+      <section className="bg-paper pt-[clamp(96px,14vh,180px)] pb-20 md:pb-[clamp(96px,14vh,180px)]">
         <div className="mx-auto grid max-w-[1200px] items-start gap-12 px-6 md:grid-cols-12 md:px-10">
           {/* Details + testimonial */}
           <div className="md:col-span-5">

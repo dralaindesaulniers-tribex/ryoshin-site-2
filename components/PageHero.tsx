@@ -1,10 +1,9 @@
-import ChatInput from "@/components/ChatInput";
 import HalfSun from "@/components/HalfSun";
 
 /**
- * Shared inner-page hero: eyebrow, a display quote, attribution, and the
- * chat concierge, over the scroll-driven half sun. Used by services / work /
- * contact so the chat placeholder is consistent site-wide.
+ * Shared inner-page hero: eyebrow, a display quote, and attribution over the
+ * pulsing half sun. The chat concierge is home-only (Ryan, July 2026); inner
+ * pages point to it via the small concierge icon in the nav.
  */
 export default function PageHero({
   eyebrow,
@@ -34,9 +33,6 @@ export default function PageHero({
         </blockquote>
         {attribution && <p className="text-paper/55 mt-8">{attribution}</p>}
         {children}
-        <div className="mt-12 flex w-full justify-center">
-          <ChatInput />
-        </div>
       </div>
     </section>
   );

@@ -4,21 +4,35 @@ import { useState } from "react";
 import { contact, contactPage } from "@/content/site";
 
 /**
- * Contact form. Posts to Formspree; routes to ryan@ryoshin.ca (spec / brief).
- * TODO: replace FORMSPREE_ID with the real endpoint before launch.
+ * Contact form. Hands the composed message to WhatsApp (Ryan's critique,
+ * July 2026: email was not being read; WhatsApp is where he works).
+ * No backend needed: submit opens a chat to the business number with the
+ * message prefilled; the visitor taps send inside WhatsApp itself.
  */
-const FORMSPREE_ID = "ACTION_URL"; // TODO-ASSET: real Formspree form id
-
 export default function ContactForm() {
   const [count, setCount] = useState(0);
   const max = contactPage.messageMaxLength;
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const text = [
+      `New inquiry via ryoshin.solutions`,
+      `Name: ${fd.get("name")}`,
+      `Email: ${fd.get("email")}`,
+      `Topic: ${fd.get("inquiry")}`,
+      "",
+      `${fd.get("message")}`,
+    ].join("\n");
+    window.open(
+      `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener",
+    );
+  };
+
   return (
-    <form
-      action={`https://formspree.io/f/${FORMSPREE_ID}`}
-      method="POST"
-      className="panel-light flex flex-col gap-6 p-8 md:p-10"
-    >
+    <form onSubmit={onSubmit} className="panel-light flex flex-col gap-6 p-8 md:p-10">
       <div className="flex flex-col gap-2">
         <label htmlFor="name" className="eyebrow text-ink/50">
           Name
@@ -87,15 +101,17 @@ export default function ContactForm() {
         </span>
       </div>
 
-      {/* Formspree routing to Ryan */}
-      <input type="hidden" name="_replyto" value={contact.formRecipient} />
-
-      <button
-        type="submit"
-        className="bg-shu hover:bg-shu-deep text-paper eyebrow self-start rounded-[2px] px-9 py-4 transition-all duration-200 hover:translate-y-[2px]"
-      >
-        Send Message
-      </button>
+      <div>
+        <button
+          type="submit"
+          className="bg-shu hover:bg-shu-deep text-paper eyebrow rounded-[2px] px-9 py-4 transition-all duration-200 hover:translate-y-[2px]"
+        >
+          Send via WhatsApp
+        </button>
+        <p className="text-ink/65 mt-4 text-sm">
+          Opens WhatsApp with your message ready to send.
+        </p>
+      </div>
     </form>
   );
 }

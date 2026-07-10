@@ -48,14 +48,15 @@ export default function Nav() {
           <Image
             src={brand.logoLight}
             alt="RYŌSHIN Solutions"
-            width={640}
-            height={180}
+            width={1388}
+            height={378}
             priority
             className="h-12 w-auto md:h-14"
           />
         </Link>
 
-        {/* Desktop links (inner pages only) */}
+        {/* Right group: links (desktop, inner pages), concierge icon, toggle */}
+        <div className="flex items-center gap-1 md:gap-0">
         <ul className={`hidden items-center gap-10 ${isHome ? "" : "md:flex"}`}>
           {nav.map((item) => (
             <li key={item.href}>
@@ -74,7 +75,32 @@ export default function Nav() {
           ))}
         </ul>
 
-        {/* Mobile toggle */}
+        {/* Concierge shortcut (inner pages only): the chat lives on the home
+            hero, this points back to it. Ryan asked for a small search icon */}
+        {!isHome && (
+          <Link
+            href="/"
+            aria-label="Ask RYŌSHIN: AI concierge on the home page"
+            className="text-paper/65 hover:text-paper relative mr-1 flex h-11 w-11 items-center justify-center transition-colors md:mr-0 md:ml-10"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-[19px] w-[19px] fill-none stroke-current"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <span
+              aria-hidden="true"
+              className="bg-shu absolute top-[9px] right-[9px] h-[5px] w-[5px] animate-ping rounded-full opacity-70 [animation-duration:2.4s]"
+            />
+          </Link>
+        )}
+
+        {/* Menu toggle (all sizes on home, mobile elsewhere) */}
         <button
           type="button"
           onClick={() => setOpen(!open)}
@@ -95,6 +121,7 @@ export default function Nav() {
             }`}
           />
         </button>
+        </div>
       </nav>
 
       {/* Menu overlay, full ink with display type (all sizes on home, mobile elsewhere) */}

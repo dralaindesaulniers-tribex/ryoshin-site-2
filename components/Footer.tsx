@@ -14,8 +14,8 @@ export default function Footer() {
               <Image
                 src={brand.logoLight}
                 alt="RYŌSHIN Solutions"
-                width={640}
-                height={180}
+                width={1388}
+                height={378}
                 className="h-16 w-auto md:h-20"
               />
             </Link>

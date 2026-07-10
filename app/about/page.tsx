@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import ChatInput from "@/components/ChatInput";
 import FooterCta from "@/components/FooterCta";
 import HalfSun from "@/components/HalfSun";
 import KanjiArt from "@/components/KanjiArt";
@@ -35,9 +34,6 @@ export default function AboutPage() {
           </span>
         </h1>
         <p className="text-paper/55 mt-8">{about.heroAttribution}</p>
-        <div className="mt-14 flex w-full justify-center">
-          <ChatInput />
-        </div>
         </div>
       </section>
 
@@ -81,8 +77,8 @@ export default function AboutPage() {
                 data-depth-photo
                 src={about.founder.photo}
                 alt="Ryan Yada, Principal Progressor"
-                width={1707}
-                height={2560}
+                width={1062}
+                height={1575}
                 className="h-auto w-full grayscale"
                 sizes="(min-width: 768px) 40vw, 100vw"
               />
