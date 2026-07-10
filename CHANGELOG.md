@@ -5,6 +5,15 @@ Dates are YYYY-MM-DD.
 
 ## 2026-07-10
 
+Pinned hero intro (Alain):
+
+- Scrolling the home hero now pins it for a beat: headline and subhead exit,
+  the chat glides to the center of the screen, and the scrim lifts so the
+  network fills the viewport at full strength. Keep scrolling and the page
+  releases and moves on as normal. Works with native touch scroll on mobile;
+  reduced motion skips the pin.
+- Hero line 2 is now full white and the subhead near-white for more contrast.
+
 Ryan's critique round 2 (PDF) plus Alain's hero contrast note:
 
 - Home hero: dark radial scrim behind the text plus text shadows and a brighter

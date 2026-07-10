@@ -43,6 +43,39 @@ export default function MotionEffects() {
         );
       });
 
+      // pinned hero intro (home): headline and subhead exit, the chat glides
+      // to the vertical center, and the scrim lifts so the network fills the
+      // screen at full strength. Pin releases, page scrolls on as normal.
+      const heroPin = document.querySelector<HTMLElement>("[data-hero-pin]");
+      const heroChat = heroPin?.querySelector<HTMLElement>("[data-hero-chat]");
+      if (heroPin && heroChat) {
+        const fadeEls = heroPin.querySelectorAll<HTMLElement>("[data-hero-fade]");
+        const scrim = heroPin.querySelector<HTMLElement>("[data-hero-scrim]");
+        // distance from the chat's natural center to the viewport center,
+        // measured transform-free so refreshes stay accurate
+        const chatShift = () => {
+          const secTop = heroPin.getBoundingClientRect().top;
+          const c = heroChat.getBoundingClientRect();
+          const cur = Number(gsap.getProperty(heroChat, "y")) || 0;
+          const centerInSection = c.top + c.height / 2 - cur - secTop;
+          return window.innerHeight / 2 - centerInSection;
+        };
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: heroPin,
+            start: "top top",
+            end: "+=85%",
+            pin: true,
+            scrub: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+          },
+        });
+        tl.to(fadeEls, { autoAlpha: 0, y: -48, duration: 0.45, ease: "power1.in" }, 0);
+        if (scrim) tl.to(scrim, { autoAlpha: 0, duration: 0.75, ease: "none" }, 0);
+        tl.to(heroChat, { y: chatShift, duration: 0.8, ease: "power1.inOut" }, 0.1);
+      }
+
       // fade-rise for eyebrows, display headings, and marked elements
       gsap.utils
         .toArray<HTMLElement>(
