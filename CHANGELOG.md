@@ -12,6 +12,8 @@ Hero fly-through, seamless white handoff (Alain, take 2):
   sun, and its light (a canvas radial centered on the orb) engulfs the screen
   edge-free until the viewport is solid paper. The next section shares that
   paper, so the release is invisible.
+- Whiteout color corrected to exact --paper #F4F1EA (was the node white
+  #EDEAE4); verified pixel-identical to the next section's background.
 
 Hero fly-through, act 2 (Alain):
 

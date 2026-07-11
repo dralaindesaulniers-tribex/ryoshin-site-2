@@ -400,10 +400,12 @@ export default function NetworkCanvas({ interactive = true }: { interactive?: bo
           Math.hypot(W - sx, H - sy),
         );
         const r = Math.max(60, (farthest / 0.55) * Math.pow(w, 1.15));
+        // exact --paper (#F4F1EA), NOT the node white: the flood must be
+        // indistinguishable from the next section's background
         const grad = ctx!.createRadialGradient(sx, sy, 0, sx, sy, r);
-        grad.addColorStop(0, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${Math.min(1, w * 2.2)})`);
-        grad.addColorStop(0.55, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},${Math.min(1, w * 1.5)})`);
-        grad.addColorStop(1, `rgba(${PAPER[0]},${PAPER[1]},${PAPER[2]},0)`);
+        grad.addColorStop(0, `rgba(244,241,234,${Math.min(1, w * 2.2)})`);
+        grad.addColorStop(0.55, `rgba(244,241,234,${Math.min(1, w * 1.5)})`);
+        grad.addColorStop(1, "rgba(244,241,234,0)");
         ctx!.fillStyle = grad;
         ctx!.fillRect(0, 0, W, H);
       }
