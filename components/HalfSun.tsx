@@ -24,13 +24,18 @@ export default function HalfSun({ variant = "scroll" }: { variant?: "scroll" | "
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: document.body,
-          start: "top top",
+          // the home hero pins for 170vh, then needs ~100vh more to clear
+          // the viewport. The sun waits below the horizon until that whole
+          // sequence is over, so it never collides with the fly-through or
+          // gets chopped at the white handoff seam (Alain)
+          start: () => window.innerHeight * 2.75,
           end: "bottom bottom",
           scrub: isMobile ? 0.5 : true,
+          invalidateOnRefresh: true,
         },
       });
-      // page top: fully below the horizon (NOT visible in the home hero).
-      // it rises, faint, as you scroll into the page, then sets at the footer.
+      // below the fly-through: fully under the horizon. It rises, faint,
+      // over the light sections mid-page, then sets at the footer.
       gsap.set(sun, { yPercent: 105, opacity: 0.3 });
       tl.to(sun, { yPercent: 6, opacity: 0.26, ease: "none", duration: 0.5 }).to(sun, {
         yPercent: 110,

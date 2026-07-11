@@ -14,6 +14,10 @@ Hero fly-through, seamless white handoff (Alain, take 2):
   paper, so the release is invisible.
 - Whiteout color corrected to exact --paper #F4F1EA (was the node white
   #EDEAE4); verified pixel-identical to the next section's background.
+- Half-sun no longer rises during the pinned intro: it was creeping into
+  frame mid-dive, vanishing under the whiteout, then reappearing chopped at
+  the handoff seam (Alain). It now waits below the horizon until the hero
+  has fully cleared the viewport, then rises over the light sections.
 
 Hero fly-through, act 2 (Alain):
 
