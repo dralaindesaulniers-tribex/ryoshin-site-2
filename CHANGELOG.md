@@ -14,6 +14,9 @@ Hero fly-through, seamless white handoff (Alain, take 2):
   paper, so the release is invisible.
 - Whiteout color corrected to exact --paper #F4F1EA (was the node white
   #EDEAE4); verified pixel-identical to the next section's background.
+- Pinned hero sized to 100lvh: iOS Safari grows the viewport when its URL
+  bar collapses mid-scroll, and the svh-sized pin exposed a black band under
+  the whiteout on phones (Alain).
 - Half-sun no longer rises during the pinned intro: it was creeping into
   frame mid-dive, vanishing under the whiteout, then reappearing chopped at
   the handoff seam (Alain). It now waits below the horizon until the hero

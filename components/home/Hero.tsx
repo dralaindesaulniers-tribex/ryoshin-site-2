@@ -19,9 +19,12 @@ export default function Hero() {
   return (
     <section className="bg-ink text-paper isolate relative overflow-hidden">
       <HalfSun />
+      {/* 100lvh, not svh: iOS Safari grows the viewport when its URL bar
+          collapses mid-scroll, and an svh-sized pin left a dark band under
+          the whiteout (Alain). lvh covers the largest possible viewport */}
       <div
         data-hero-pin
-        className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 md:px-10"
+        className="relative flex min-h-[100lvh] flex-col items-center justify-center overflow-hidden px-6 pt-28 pb-16 md:px-10"
       >
         {/* living network background */}
         <NetworkHero />
