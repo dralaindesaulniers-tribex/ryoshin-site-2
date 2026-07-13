@@ -3,9 +3,9 @@ import type { OpenNextConfig } from '@opennextjs/cloudflare';
 const config = {
   default: {
     override: {
-      wrapper: 'cloudflare-node-compat',
+      wrapper: 'cloudflare-node',
       converter: 'cloudflare',
-      incrementalISRAndSWR: 'true',
+      incrementalISRAndSWR: true,
     },
   },
   dangerous: {
