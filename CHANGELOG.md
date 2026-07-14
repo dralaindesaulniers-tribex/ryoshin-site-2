@@ -19,6 +19,12 @@ folder):
   Eftekhari (photo on hand). Sean Lowrie doc excluded (campaign profile,
   not a partner bio).
 
+Partners page round 2 (Alain):
+
+- Chad Eneas photo added; Sean Lowrie card added (bio from his profile doc,
+  headshot pending a manual save from Drive, initials placeholder shown).
+- Cards reordered: Alain moved to the bottom of the roster per his request.
+
 ## 2026-07-13
 
 - For Organizations / For Individuals cards leveled: equal width and height,
