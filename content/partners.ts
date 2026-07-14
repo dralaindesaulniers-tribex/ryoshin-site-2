@@ -95,10 +95,7 @@ export const partnersPage = {
       name: "Sean Lowrie",
       role: "Head of External Affairs",
       org: "Arca",
-      // TODO-ASSET: "Sean lowrie.jpeg" is in the Drive folder; needs a manual
-      // save into public/images/partners/sean-lowrie.jpg (Drive blocked
-      // automated download), then set this to that path
-      photo: null,
+      photo: "/images/partners/sean-lowrie.jpg",
       bio: [
         "Sean Lowrie is a humanitarian leader and climate tech executive who has spent 30 years bringing people who do not usually work together around the table to solve hard problems. He founded and led the Start Network, growing it from 15 founding NGOs into a coalition of 42 members across 15 countries that has secured over $200 million for crisis response in more than 50 countries.",
         "His early career took him to the frontlines of the refugee crises of the 1990s with CARE and Médecins Sans Frontières, and he built the global training programme for the Sphere Standards, the humanitarian sector's first common charter, delivering it on five continents. He holds a PhD from King's College London.",
