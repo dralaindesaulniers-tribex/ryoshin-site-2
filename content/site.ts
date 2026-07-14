@@ -22,9 +22,10 @@ export const contact = {
   email: "hello@ryoshin.ca",
   formRecipient: "ryan@ryoshin.ca",
   socials: [
-    { label: "LinkedIn", href: "#" }, // [COPY TBD] real profile URLs
-    { label: "Instagram", href: "#" },
-    { label: "Facebook", href: "#" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/company/ryoshinsolutions/" },
+    { label: "Instagram", href: "https://www.instagram.com/ryoshin.solutions/" },
+    // canonical page URL resolved from Ryan's share link, tracking params stripped
+    { label: "Facebook", href: "https://www.facebook.com/profile.php?id=61560112841901" },
   ],
 };
 

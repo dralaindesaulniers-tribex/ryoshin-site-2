@@ -77,7 +77,12 @@ export default function Footer() {
             <ul className="mt-6 flex gap-6">
               {contact.socials.map((s) => (
                 <li key={s.label}>
-                  <a href={s.href} className="link-draw eyebrow text-paper/50 hover:text-paper transition-colors">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="link-draw eyebrow text-paper/50 hover:text-paper transition-colors"
+                  >
                     {s.label}
                   </a>
                 </li>
