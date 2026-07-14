@@ -1,3 +1,4 @@
+import Link from "next/link";
 import PartnersNetwork from "@/components/network/PartnersNetwork";
 import { partnersClients } from "@/content/site";
 
@@ -24,6 +25,12 @@ export default function PartnersClients() {
 
         <div className="mt-16 md:mt-20">
           <PartnersNetwork />
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link href="/partners" className="link-draw eyebrow text-ink/70 hover:text-ink">
+            Meet the people behind the network
+          </Link>
         </div>
       </div>
     </section>

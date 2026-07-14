@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-07-14
+
+Partners page + network popups filled (bios and photos from Alain's Drive
+folder):
+
+- New /partners page: seven people across six partner organizations, each
+  with headshot (or styled initials placeholder while pending), role, and a
+  condensed bio in site voice. Anchors per person.
+- "Tribe Rocks" renamed to TribeX (Alain Desaulniers) per Alain.
+- Three new partner orgs on the network: Kizuna Tours (April May Bellia),
+  abORIGINAL (Jinxz Pollard-Flamand and Chad Eneas), Fraction Philanthropy
+  Group (Oliver Zihlmann). Popup cards now show the person, their photo,
+  and a Full bio link to /partners.
+- "Meet the people behind the network" link added under the home network.
+- Headshots EXIF-stripped (one had phone GPS data) and size-capped.
+- Pending: headshots for Wladimir (Eitree) and Chad Eneas; bio for Kevin
+  Eftekhari (photo on hand). Sean Lowrie doc excluded (campaign profile,
+  not a partner bio).
+
 ## 2026-07-13
 
 - For Organizations / For Individuals cards leveled: equal width and height,

@@ -345,31 +345,44 @@ export default function PartnersNetwork() {
                 </p>
               </div>
             )}
-            {selected.workAnchor && (
-              <Link
-                href={selected.workAnchor}
-                className="link-draw eyebrow text-paper/80 hover:text-paper mt-5 inline-block text-[11px]"
-              >
-                See the work
-              </Link>
-            )}
+            <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+              {selected.pageAnchor && (
+                <Link
+                  href={selected.pageAnchor}
+                  className="link-draw eyebrow text-paper/80 hover:text-paper inline-block text-[11px]"
+                >
+                  Full bio
+                </Link>
+              )}
+              {selected.workAnchor && (
+                <Link
+                  href={selected.workAnchor}
+                  className="link-draw eyebrow text-paper/80 hover:text-paper inline-block text-[11px]"
+                >
+                  See the work
+                </Link>
+              )}
+            </div>
           </aside>
         )}
       </div>
 
       {/* Accessible / no-JS / SEO list of the same entities */}
       <ul className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-        {[...partners, ...clients].map((e) => (
-          <li key={e.id}>
-            {e.workAnchor ? (
-              <a href={e.workAnchor} className="link-draw text-ink/70 hover:text-ink text-base">
-                {e.name}
-              </a>
-            ) : (
-              <span className="text-ink/60 text-base">{e.name}</span>
-            )}
-          </li>
-        ))}
+        {[...partners, ...clients].map((e) => {
+          const href = e.pageAnchor ?? e.workAnchor;
+          return (
+            <li key={e.id}>
+              {href ? (
+                <a href={href} className="link-draw text-ink/70 hover:text-ink text-base">
+                  {e.name}
+                </a>
+              ) : (
+                <span className="text-ink/60 text-base">{e.name}</span>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
