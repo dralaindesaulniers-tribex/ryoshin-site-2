@@ -2,6 +2,9 @@
 
 ## 2026-07-13
 
+- For Organizations / For Individuals cards leveled: equal width and height,
+  offset removed (the staggered-grid pattern is now retired site-wide).
+
 Ryan's AI rant synthesized into site copy, partner popups, Cloudflare era:
 
 - Applied AI section (home 06) now carries real copy from Ryan's July 2026
