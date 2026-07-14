@@ -40,7 +40,7 @@ export const partnersPage = {
       name: "Wladimir Ribeiro Junior",
       role: "Founder",
       org: "Eitree",
-      photo: null, // TODO-ASSET: headshot
+      photo: "/images/partners/wladimir-ribeiro.jpg",
       bio: [
         "Wladimir is a technology founder and strategic consultant with a strong background in software architecture, AI integration, and technical execution. Through Eitree, he works with organizations to assess technical needs, design practical solutions, and guide implementation, bridging the gap between business objectives and reliable technology delivery.",
         "Eitree designs and builds artificial intelligence systems, including machine learning workflows, computer vision, and LLM powered tools, with clients spanning startups to enterprise organizations in regulated industries such as healthcare and finance.",
