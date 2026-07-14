@@ -139,23 +139,27 @@ export const testimonials: Testimonial[] = [
   { quote: "", name: "Chief Chad", title: "Penticton Indian Band", pending: true },
 ];
 
+// Source: Ryan's AI rant, July 2026. Every claim below is his.
 export const aiProjects = {
   eyebrow: "Applied AI",
-  headline: "AI, applied with intention.", // [COPY TBD]
+  headline: "AI, applied with intention.",
   intro:
-    "[INTERVIEW RYAN] One to two sentences on how RYŌSHIN approaches AI: practical, human-centered, in service of the mission.",
+    "We start with governance, not gadgets. Appropriate use policies ratified at the board level, staff training, and an ethics framework grounded in a commissioned Deloitte study. Then we put AI to work on things that matter.",
   items: [
     {
-      title: "[INTERVIEW RYAN] AI prototype one, NNMCC",
-      body: "[INTERVIEW RYAN] What it does, who it serves, what it proved.",
+      status: "Proof of concept",
+      title: "Ask your ancestors",
+      body: "Decades of oral histories, transcribed and translated by AI, then made fully searchable. Our proof of concept for the Nikkei National Museum means you can ask a question and find the answer in the voices of the people who lived it.",
     },
     {
-      title: "[INTERVIEW RYAN] AI prototype two, NNMCC",
-      body: "[INTERVIEW RYAN] What it does, who it serves, what it proved.",
+      status: "Business case underway",
+      title: "AI that never leaves the building",
+      body: "Fifty years of archival backlog, some of it sensitive. We are building the business case for sovereign AI: local models that describe, transcribe, and flag sensitive content on site, so nothing gets shipped to servers the community never agreed to.",
     },
     {
-      title: "[INTERVIEW RYAN] AI policy and standards work",
-      body: "[INTERVIEW RYAN] The governance and standards side of the practice.",
+      status: "Delivered",
+      title: "Six months of research, done in 45 minutes",
+      body: "The museum needed a master subject index for its new collections system, an effort that would normally take three to six months. A deep research pass covered more than 800 sources in 45 minutes, without sacrificing the museum's brand or integrity.",
     },
   ],
 };
@@ -275,7 +279,7 @@ export const services = {
   list: [
     { title: "Strategic Growth Consulting", body: "Aligning vision, purpose, and measurable goals." },
     { title: "Business & Technology Strategy Development", body: "From market positioning to tech roadmaps." },
-    { title: "AI, App, & Digital Platform Strategy", body: "Development, launch, and marketing guidance." },
+    { title: "AI, App, & Digital Platform Strategy", body: "From appropriate use policies to sovereign AI pilots and launches." },
     { title: "Vision-Led Project Management", body: "Delivering projects that connect people and technology." },
     { title: "Digital Transformation & Change Management", body: "Leading organizations through evolution." },
     { title: "Data to Decisions (D2D)", body: "Analysis, dashboarding, and impact measurement." },
@@ -307,6 +311,13 @@ export const work = {
           title: "Internment Bus Tour",
           body: "In just weeks, we brought together a talented team, hit the road, and set out to capture a living piece of history. Using drones, multiple cameras, and immersive 360° technology, we documented voices, landscapes, and moments that might otherwise fade away, turning a small project into an enduring record of resilience and memory.",
         },
+      ],
+      // Source: Ryan's AI rant, July 2026
+      highlights: [
+        "Over $2 million saved on a $3.5M collections system through formal requirements and RFP",
+        "AI appropriate use policy and standards, ratified by the board, with staff training",
+        "Ethics and governance framework built on a commissioned Deloitte study",
+        "Online internment camp tour, 3D exhibit walkthrough, and the Story Lab course",
       ],
     },
     {

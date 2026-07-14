@@ -13,6 +13,14 @@ export type NetworkEntity = {
   line: string; // one-liner for the network info card + 2D card
   logo: string | null; // null = TODO-ASSET, render styled text mark
   workAnchor?: string; // /work#anchor for info card link
+  // the person behind the partner, shown in the network popup.
+  // null = bio + headshot not yet provided (TODO-ASSET, Alain has these)
+  person?: {
+    name: string;
+    role: string;
+    photo: string | null; // null = TODO-ASSET headshot
+    bio: string;
+  } | null;
 };
 
 export const networkEntities: NetworkEntity[] = [
@@ -24,6 +32,7 @@ export const networkEntities: NetworkEntity[] = [
     ring: 1,
     line: "[COPY TBD] Partner",
     logo: null, // TODO-ASSET
+    person: null, // TODO-ASSET: bio + headshot from Alain
   },
   {
     id: "eitree",
@@ -32,6 +41,7 @@ export const networkEntities: NetworkEntity[] = [
     ring: 1,
     line: "[COPY TBD] Partner",
     logo: null, // TODO-ASSET
+    person: null, // TODO-ASSET: bio + headshot from Alain
   },
   {
     id: "mobius",
@@ -40,6 +50,7 @@ export const networkEntities: NetworkEntity[] = [
     ring: 1,
     line: "[COPY TBD] Partner",
     logo: null, // TODO-ASSET
+    person: null, // TODO-ASSET: bio + headshot from Alain
   },
   // Recent clients (medium named nodes, second ring)
   {

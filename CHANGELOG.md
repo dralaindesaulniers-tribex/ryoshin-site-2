@@ -1,5 +1,25 @@
 # Changelog
 
+## 2026-07-13
+
+Ryan's AI rant synthesized into site copy, partner popups, Cloudflare era:
+
+- Applied AI section (home 06) now carries real copy from Ryan's July 2026
+  rant: Ask your ancestors (oral history POC), AI that never leaves the
+  building (sovereign AI business case), and the 45-minute research pass.
+  Placeholder chrome replaced with honest status tags.
+- Work page NNMCC case study gains a highlights list: $2M+ saved on the
+  collections system RFP, board-ratified AI policy, Deloitte-grounded
+  ethics framework, camp tour + 3D walkthrough + Story Lab.
+- Services list: AI item now spans governance to sovereign AI pilots.
+- Partners network nodes now open an info card popup (entity, one-liner,
+  case study link, Escape/click-out to close) with ready slots for partner
+  bios and headshots (TODO-ASSET: awaiting files from Alain).
+- next.config gains SKIP_CF_DEV guard so `next dev` runs in sandboxes where
+  the OpenNext Cloudflare dev runtime cannot start.
+- Deploys now run on Cloudflare Workers via the repo integration
+  (ryoshin.dralaindesaulniers.workers.dev); Netlify is retired.
+
 All notable changes to the RYŌSHIN Solutions website are recorded here, newest first.
 Dates are YYYY-MM-DD.
 

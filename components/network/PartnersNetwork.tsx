@@ -1,16 +1,19 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Link from "next/link";
 import { networkEntities, type NetworkEntity } from "@/content/network";
 
 /**
  * Smaller, contained network for the Partners & Clients section. The nodes ARE
  * the partners (inner ring, larger) and clients (outer ring), each clickable:
- * a node with a work case study navigates to its /work anchor. Same core visual
- * language as the hero network (RYŌSHIN orb, half-ring, glow halos, pulses) but
- * focused and interactive. An accessible link list is rendered alongside for
- * keyboard users, no-JS, and SEO.
+ * clicking opens an info card popup (Alain, July 2026) with the entity, the
+ * person behind it when we have their bio + headshot, and a link to the work
+ * case study when one exists. Same core visual language as the hero network
+ * (RYŌSHIN orb, half-ring, glow halos, pulses) but focused and interactive.
+ * An accessible link list is rendered alongside for keyboard users, no-JS,
+ * and SEO.
  */
 
 type Vec3 = [number, number, number];
@@ -33,8 +36,8 @@ type PNode = {
 export default function PartnersNetwork() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [selected, setSelected] = useState<NetworkEntity | null>(null);
   const [touch, setTouch] = useState(false);
-  const router = useRouter();
   const nodesRef = useRef<PNode[]>([]);
   const hoverRef = useRef<string | null>(null);
 
@@ -243,7 +246,7 @@ export default function PartnersNetwork() {
     const onMove = (e: MouseEvent) => {
       const rect = canvas!.getBoundingClientRect();
       const hit = hitTest(e.clientX - rect.left, e.clientY - rect.top);
-      const id = hit?.entity && hit.entity.workAnchor ? hit.entity.id : null;
+      const id = hit?.entity ? hit.entity.id : null;
       hoverRef.current = id;
       setHovered(id);
       canvas!.style.cursor = id ? "pointer" : "default";
@@ -251,7 +254,8 @@ export default function PartnersNetwork() {
     const onClick = (e: MouseEvent) => {
       const rect = canvas!.getBoundingClientRect();
       const hit = hitTest(e.clientX - rect.left, e.clientY - rect.top);
-      if (hit?.entity?.workAnchor) router.push(hit.entity.workAnchor);
+      // node opens the info card; empty canvas closes it
+      setSelected(hit?.entity ?? null);
     };
     const onResize = () => build();
 
@@ -270,6 +274,16 @@ export default function PartnersNetwork() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Escape closes the info card
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelected(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
+
   return (
     <div className="relative">
       <div className="bg-ink relative overflow-hidden rounded-[2px] border border-(--color-line-dark)">
@@ -283,8 +297,64 @@ export default function PartnersNetwork() {
           className="eyebrow text-paper/55 pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 text-[11px]"
           aria-hidden="true"
         >
-          {touch ? "Tap a node to explore" : hovered ? "Click to explore" : "Hover a node"}
+          {touch ? "Tap a node to meet the network" : hovered ? "Click to open" : "Hover a node"}
         </p>
+
+        {/* info card popup: the entity, the person behind it when we have
+            them, and the case study link when one exists */}
+        {selected && (
+          <aside
+            role="dialog"
+            aria-label={selected.name}
+            className="panel-dark absolute inset-x-3 bottom-3 max-h-[calc(100%-24px)] overflow-y-auto p-6 md:inset-x-auto md:top-4 md:right-4 md:bottom-auto md:w-[340px] md:p-7"
+          >
+            <button
+              type="button"
+              onClick={() => setSelected(null)}
+              aria-label="Close"
+              className="text-paper/60 hover:text-paper absolute top-3 right-3 flex h-9 w-9 items-center justify-center text-xl leading-none transition-colors"
+            >
+              &times;
+            </button>
+            <p className="eyebrow text-shu text-[11px]">
+              {selected.tier === "partner" ? "Partner" : "Client"}
+            </p>
+            <h3 className="font-display text-paper mt-2 pr-8 text-xl">{selected.name}</h3>
+            {!selected.line.includes("[COPY TBD]") && (
+              <p className="text-paper/65 mt-2 text-sm">{selected.line}</p>
+            )}
+            {selected.person && (
+              <div className="mt-5 border-t border-(--color-line-dark) pt-5">
+                <div className="flex items-center gap-4">
+                  {selected.person.photo && (
+                    <Image
+                      src={selected.person.photo}
+                      alt={selected.person.name}
+                      width={96}
+                      height={96}
+                      className="h-14 w-14 rounded-full object-cover"
+                    />
+                  )}
+                  <div>
+                    <p className="text-paper text-base font-medium">{selected.person.name}</p>
+                    <p className="text-paper/60 text-sm">{selected.person.role}</p>
+                  </div>
+                </div>
+                <p className="text-paper/70 mt-4 text-sm leading-relaxed">
+                  {selected.person.bio}
+                </p>
+              </div>
+            )}
+            {selected.workAnchor && (
+              <Link
+                href={selected.workAnchor}
+                className="link-draw eyebrow text-paper/80 hover:text-paper mt-5 inline-block text-[11px]"
+              >
+                See the work
+              </Link>
+            )}
+          </aside>
+        )}
       </div>
 
       {/* Accessible / no-JS / SEO list of the same entities */}
