@@ -2,6 +2,12 @@
 
 ## 2026-07-14
 
+Favicon:
+
+- Replaced the default Next.js favicon with a RYŌSHIN mark: vermilion
+  half-sun on ink, echoing the dot over the i in the wordmark. Added
+  icon.png, apple-icon.png, and a proper multi-size favicon.ico.
+
 Partner inquiry form on /partners:
 
 - Replaced the generic "Ready to Start?" CTA at the bottom of the partners
