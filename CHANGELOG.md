@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-07-15
+
+Partners:
+
+- Kevin Eftekhari added to the core team block (after Kavi): Founder,
+  Self-Mastery Practitioner, with headshot from the Drive folder and his
+  bio in site voice. Joose is now the only pending core team member.
+
 ## 2026-07-14
 
 Footer:

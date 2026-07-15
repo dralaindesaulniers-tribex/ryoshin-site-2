@@ -3,8 +3,8 @@
  * Drive folder (July 2026), condensed for the web with facts unchanged.
  * Voice rules apply: no em dashes, short sentences, nothing invented.
  *
- * Pending (TODO-ASSET): bios for Kevin Eftekhari (photo on hand) and Joose;
- * both join the core team block up top when their material arrives.
+ * Pending (TODO-ASSET): bio, name, and photo for Joose; joins the core team
+ * block up top when the material arrives.
  */
 
 export type PartnerPerson = {
@@ -32,8 +32,8 @@ export const partnersPage = {
     note: "Opens WhatsApp with your message ready to send.",
     messageMaxLength: 350,
   },
-  // Core team first (Alain, then Kavi, Wlad; Kevin and Joose join when their
-  // bios arrive), then the wider roster. No numbering: order is not ranking.
+  // Core team first (Alain, Kavi, Kevin, Wlad; Joose joins when their bio
+  // arrives), then the wider roster. No numbering: order is not ranking.
   people: [
     {
       id: "tribex",
@@ -56,6 +56,18 @@ export const partnersPage = {
         "Kavi Lochan is a fractional COO and operations leader with more than 20 years leading operations, transformation, governance, and service delivery across regulated, public-sector, multi-site, and high-accountability environments.",
         "At Mobius Systems, he helps organizations build resilient operating systems that improve decision quality, accelerate execution, and enable responsible AI adoption. Like the Möbius strip the company is named for, strategy and execution exist on one continuous surface: Mobius stays through implementation and builds systems that keep delivering after the engagement ends.",
         "His conviction is simple. AI does not transform organizations. People, processes, and leadership do.",
+      ],
+    },
+    {
+      id: "kevin-eftekhari",
+      name: "Kevin Eftekhari",
+      role: "Founder",
+      org: "Self-Mastery Practitioner",
+      photo: "/images/partners/kevin-eftekhari.jpg",
+      bio: [
+        "Kevin is an organizational governance and leadership coach who has spent eighteen years developing a body of work on how organizations, and the people who lead them, come to see themselves clearly and govern themselves with integrity.",
+        "Three of his offerings work on the organization: a governance assessment that surfaces the contradictions it can't see in itself, elicitation work that draws out the core values it already lives and defines them precisely enough to hire and lead by, and a self-governance install that strengthens the organization's self-correction mechanism. The fourth is a year of one-on-one self-mastery coaching with the leader who has to facilitate the organizational changes without getting pulled off their center.",
+        "The aim of his practice is to be needed less over time.",
       ],
     },
     {
