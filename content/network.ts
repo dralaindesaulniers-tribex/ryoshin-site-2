@@ -54,7 +54,7 @@ export const networkEntities: NetworkEntity[] = [
     person: {
       name: "Wladimir Ribeiro Junior",
       role: "Founder, Eitree",
-      photo: null, // TODO-ASSET: headshot from Alain
+      photo: "/images/partners/wladimir-ribeiro.jpg",
       bio: "Technology founder and strategic consultant who bridges business objectives and reliable technology delivery: software architecture, AI integration, and technical execution.",
     },
   },
@@ -90,7 +90,7 @@ export const networkEntities: NetworkEntity[] = [
   },
   {
     id: "aboriginal",
-    name: "abORIGINAL",
+    name: "Two Roots",
     tier: "partner",
     ring: 1,
     line: "Wild fermentation and Indigenous food sovereignty in the Okanagan.",
@@ -98,9 +98,9 @@ export const networkEntities: NetworkEntity[] = [
     pageAnchor: "/partners#aboriginal",
     person: {
       name: "Jinxz Pollard-Flamand",
-      role: "Co-founder, abORIGINAL",
+      role: "Co-founder, Two Roots",
       photo: "/images/partners/jinxz-pollard-flamand.jpg",
-      bio: "Citizen of Métis Nation British Columbia with an MSc in Biology. Co-founded abORIGINAL with Chad Eneas, blending scientific rigour with traditional fermentation knowledge.",
+      bio: "Citizen of Métis Nation British Columbia with an MSc in Biology. Co-founded Two Roots with Chad Eneas, blending scientific rigour with traditional fermentation knowledge.",
     },
   },
   {

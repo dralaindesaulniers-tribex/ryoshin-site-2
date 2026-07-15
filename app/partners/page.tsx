@@ -74,10 +74,8 @@ export default function PartnersPage() {
               </div>
 
               <div className={`md:col-span-7 ${idx % 2 === 1 ? "md:order-1 md:col-start-1" : "md:col-start-6"}`}>
-                <p className="eyebrow text-ink/45">
-                  <span className="eyebrow-num">{String(idx + 1).padStart(2, "0")}</span>
-                  {p.org}
-                </p>
+                {/* no numbers: the roster has no ranking (Alain) */}
+                <p className="eyebrow text-ink/45">{p.org}</p>
                 <h2 className="display text-ink mt-5" style={{ fontSize: "var(--text-display-xs)" }}>
                   {p.name}
                 </h2>

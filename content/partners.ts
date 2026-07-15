@@ -3,8 +3,8 @@
  * Drive folder (July 2026), condensed for the web with facts unchanged.
  * Voice rules apply: no em dashes, short sentences, nothing invented.
  *
- * Pending (TODO-ASSET): headshots for Wladimir and Chad; bio for Kevin
- * Eftekhari (photo on hand, card added when his bio arrives).
+ * Pending (TODO-ASSET): bios for Kevin Eftekhari (photo on hand) and Joose;
+ * both join the core team block up top when their material arrives.
  */
 
 export type PartnerPerson = {
@@ -22,7 +22,20 @@ export const partnersPage = {
   heroAttribution: "The people we build with",
   intro:
     "RYŌSHIN Solutions works as a network. For every engagement we bring the right people to the table: specialists we trust, who share our standard for doing work with a good heart. These are the people behind the nodes.",
+  // Core team first (Alain, then Kavi, Wlad; Kevin and Joose join when their
+  // bios arrive), then the wider roster. No numbering: order is not ranking.
   people: [
+    {
+      id: "tribex",
+      name: "Alain Desaulniers",
+      role: "Founder",
+      org: "TribeX",
+      photo: "/images/partners/alain-desaulniers.webp",
+      bio: [
+        "Dr. Alain Desaulniers is a Vancouver based family chiropractor, professional speaker, and the founder of TribeX, a leadership and communication company where he leads his flagship program, the TRANSFORM Speaking Academy. Through his signature Lighthouse Story Method, he teaches health experts, holistic practitioners, and coaches how to grow their confidence and heart-centred influence from the stage.",
+        "A passionate storyteller and educator, he recently developed the bilingual Heritage StoryLab digital program for the Nikkei National Museum and Cultural Centre. He lives in British Columbia with his wife, Sarah, and their two daughters, Ève and Olivia.",
+      ],
+    },
     {
       id: "mobius",
       name: "Kavi Lochan",
@@ -62,21 +75,21 @@ export const partnersPage = {
       id: "aboriginal",
       name: "Jinxz Pollard-Flamand",
       role: "Co-founder",
-      org: "abORIGINAL",
+      org: "Two Roots",
       photo: "/images/partners/jinxz-pollard-flamand.jpg",
       bio: [
-        "Jinxz Pollard-Flamand, a citizen of Métis Nation British Columbia with an MSc in Biology, co-founded abORIGINAL with Chad Eneas of the Penticton Indian Band to bring small batch, wild lacto-fermented carrots to the Okanagan, blending scientific rigour with traditional fermentation knowledge and Indigenous food sovereignty.",
+        "Jinxz Pollard-Flamand, a citizen of Métis Nation British Columbia with an MSc in Biology, co-founded Two Roots with Chad Eneas of the Penticton Indian Band to bring small batch, wild lacto-fermented carrots to the Okanagan, blending scientific rigour with traditional fermentation knowledge and Indigenous food sovereignty.",
       ],
     },
     {
       id: "aboriginal-chad",
       name: "Chad Eneas",
-      role: "Co-founder, abORIGINAL",
+      role: "Co-founder, Two Roots",
       org: "Former Chief, Penticton Indian Band",
       photo: "/images/partners/chad-eneas.jpg",
       bio: [
         "Chad Eneas, whose Syilx name is nk'lxwcin, is a Syilx and Okanagan leader, traditional knowledge keeper, and former Chief of the Penticton Indian Band, where he served from 2016 to 2020. A lifelong resident of the Okanagan, his work restores Syilx roles and responsibilities to the land: language and culture revitalization, traditional land use, water stewardship, and the return of salmon to the Okanagan and Columbia river systems.",
-        "He now serves as tmixʷ Programs Manager at the En'owkin Centre and chairs the Indigenous Knowledge Council of the Columbia River Salmon Reintroduction Initiative. With Jinxz Pollard-Flamand, he co-founded abORIGINAL, a fermented food venture rooted in the same care for land and community.",
+        "He now serves as tmixʷ Programs Manager at the En'owkin Centre and chairs the Indigenous Knowledge Council of the Columbia River Salmon Reintroduction Initiative. With Jinxz Pollard-Flamand, he co-founded Two Roots, a fermented food venture rooted in the same care for land and community.",
       ],
     },
     {
@@ -100,17 +113,6 @@ export const partnersPage = {
         "Sean Lowrie is a humanitarian leader and climate tech executive who has spent 30 years bringing people who do not usually work together around the table to solve hard problems. He founded and led the Start Network, growing it from 15 founding NGOs into a coalition of 42 members across 15 countries that has secured over $200 million for crisis response in more than 50 countries.",
         "His early career took him to the frontlines of the refugee crises of the 1990s with CARE and Médecins Sans Frontières, and he built the global training programme for the Sphere Standards, the humanitarian sector's first common charter, delivering it on five continents. He holds a PhD from King's College London.",
         "Based in North Vancouver, he now leads external affairs at Arca, a Vancouver carbon removal company. In his own words, he is trying to be a good ancestor.",
-      ],
-    },
-    {
-      id: "tribex",
-      name: "Alain Desaulniers",
-      role: "Founder",
-      org: "TribeX",
-      photo: "/images/partners/alain-desaulniers.webp",
-      bio: [
-        "Dr. Alain Desaulniers is a Vancouver based family chiropractor, professional speaker, and the founder of TribeX, a leadership and communication company where he leads his flagship program, the TRANSFORM Speaking Academy. Through his signature Lighthouse Story Method, he teaches health experts, holistic practitioners, and coaches how to grow their confidence and heart-centred influence from the stage.",
-        "A passionate storyteller and educator, he recently developed the bilingual Heritage StoryLab digital program for the Nikkei National Museum and Cultural Centre. He lives in British Columbia with his wife, Sarah, and their two daughters, Ève and Olivia.",
       ],
     },
   ] satisfies PartnerPerson[],
