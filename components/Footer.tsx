@@ -37,6 +37,12 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
+              {/* Partners lives in the footer only, not the top nav (Alain) */}
+              <li>
+                <Link href="/partners" className="link-draw hover:text-paper transition-colors">
+                  Partners
+                </Link>
+              </li>
               <li>
                 <Link href="/privacy" className="link-draw hover:text-paper transition-colors">
                   Privacy Policy

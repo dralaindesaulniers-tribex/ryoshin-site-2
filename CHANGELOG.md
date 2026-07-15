@@ -2,6 +2,11 @@
 
 ## 2026-07-14
 
+Footer:
+
+- Added a Partners link to the Explore column (footer only, top nav
+  unchanged).
+
 Favicon:
 
 - Replaced the default Next.js favicon with a RYŌSHIN mark: vermilion
