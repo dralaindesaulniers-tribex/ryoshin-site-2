@@ -306,7 +306,8 @@ export default function PartnersNetwork() {
           <aside
             role="dialog"
             aria-label={selected.name}
-            className="panel-dark absolute inset-x-3 bottom-3 max-h-[calc(100%-24px)] overflow-y-auto p-6 md:inset-x-auto md:top-4 md:right-4 md:bottom-auto md:w-[340px] md:p-7"
+            data-lenis-prevent
+            className="panel-dark absolute inset-x-3 bottom-3 max-h-[calc(100%-24px)] overflow-y-auto overscroll-contain p-6 md:inset-x-auto md:top-4 md:right-4 md:bottom-auto md:w-[340px] md:p-7"
           >
             <button
               type="button"

@@ -2,6 +2,14 @@
 
 ## 2026-07-15
 
+Network popup scroll fix:
+
+- The partner/client info card on the home network popup now scrolls
+  internally instead of scrolling the whole page. Lenis smooth scroll was
+  capturing the wheel globally; added data-lenis-prevent and
+  overscroll-contain to the card so it scrolls on its own (desktop and
+  touch).
+
 Partners:
 
 - Kevin Eftekhari added to the core team block (after Kavi): Founder,
