@@ -2,6 +2,13 @@
 
 ## 2026-07-14
 
+Partner inquiry form on /partners:
+
+- Replaced the generic "Ready to Start?" CTA at the bottom of the partners
+  page with a "Want to be a partner?" form (copy per Alain). Name, email,
+  optional organization, and message; submits via WhatsApp exactly like the
+  contact page form, no backend needed.
+
 Partners page + network popups filled (bios and photos from Alain's Drive
 folder):
 

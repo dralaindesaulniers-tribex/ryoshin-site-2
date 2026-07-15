@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
-import FooterCta from "@/components/FooterCta";
+import PartnerCta from "@/components/PartnerCta";
 import { partnersPage } from "@/content/partners";
 
 export const metadata: Metadata = {
@@ -95,7 +95,8 @@ export default function PartnersPage() {
         </div>
       </section>
 
-      <FooterCta />
+      {/* Partner inquiry form replaces the generic Ready to Start CTA (Alain) */}
+      <PartnerCta />
     </main>
   );
 }

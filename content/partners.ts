@@ -22,6 +22,16 @@ export const partnersPage = {
   heroAttribution: "The people we build with",
   intro:
     "RYŌSHIN Solutions works as a network. For every engagement we bring the right people to the table: specialists we trust, who share our standard for doing work with a good heart. These are the people behind the nodes.",
+  // Bottom-of-page partner inquiry form (replaces the generic Ready to Start
+  // CTA here). Copy per Alain, July 2026. Submits via WhatsApp like /contact.
+  cta: {
+    eyebrow: "Join the network",
+    headline: "Want to be a partner?",
+    body: "Get in touch. We love connecting with people who are looking to make a big impact.",
+    button: "Send via WhatsApp",
+    note: "Opens WhatsApp with your message ready to send.",
+    messageMaxLength: 350,
+  },
   // Core team first (Alain, then Kavi, Wlad; Kevin and Joose join when their
   // bios arrive), then the wider roster. No numbering: order is not ranking.
   people: [
