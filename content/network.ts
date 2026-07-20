@@ -157,15 +157,6 @@ export const networkEntities: NetworkEntity[] = [
     line: "[COPY TBD] Client",
     logo: null, // TODO-ASSET
   },
-  {
-    id: "pib",
-    name: "Penticton Indian Band",
-    shortName: "PIB",
-    tier: "client",
-    ring: 2,
-    line: "[COPY TBD] Client",
-    logo: null, // TODO-ASSET
-  },
 ];
 
 // Category labels float OUTSIDE the center zone (spec 7.1). Nothing crowds the core.

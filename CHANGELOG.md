@@ -5,7 +5,9 @@
 - Partners: added Andre Parfeniuk (Prairie Ocean Media) to the wider roster,
   with headshot and a condensed bio in site voice.
 - Trusted By: removed the Penticton Indian Band text mark from the homepage
-  logo strip (still a client node in the network graph).
+  logo strip.
+- Network: removed the Penticton Indian Band client node from the home
+  "Good company, kept." graph and its accessible list below it.
 
 ## 2026-07-15
 
