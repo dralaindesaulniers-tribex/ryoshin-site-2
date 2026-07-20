@@ -137,5 +137,18 @@ export const partnersPage = {
         "Based in North Vancouver, he now leads external affairs at Arca, a Vancouver carbon removal company. In his own words, he is trying to be a good ancestor.",
       ],
     },
+    {
+      id: "prairie-ocean",
+      name: "Andre Parfeniuk",
+      role: "Founder",
+      org: "Prairie Ocean Media",
+      photo: "/images/partners/andre-parfeniuk.jpg",
+      bio: [
+        "Andre Parfeniuk is a Canadian filmmaker, entrepreneur, media producer, interviewer, and hockey instructor based in Vancouver. He is the founder of Prairie Ocean Media, an independent production company he established in 2005 that specializes in documentaries, interviews, and digital media.",
+        "A graduate of the University of British Columbia, Andre began his professional television career with Soapbox Productions on the series On-Screen before launching his own company. Through Prairie Ocean Media he produces documentary films, podcasts, interviews, and original content focused on compelling personal stories, business, culture, health, and important social issues.",
+        "He is also the founder of Slapshot Alley, a hockey training business he started in 2001, where personalized instruction helps players improve their shooting mechanics, accuracy, power, and confidence. And he is the creator of Pandemic Debate, an independent media platform featuring interviews, documentaries, and commentary on public health, government policy, informed consent, and medical freedom.",
+        "Across all of his projects, Andre combines entrepreneurship, filmmaking, and storytelling with more than two decades of experience creating meaningful content and building original businesses.",
+      ],
+    },
   ] satisfies PartnerPerson[],
 };

@@ -62,7 +62,6 @@ export const trustedBy = {
       src: "/images/logo-nikkei.png",
     },
     { name: "Google", src: "/images/logo-google.png" },
-    { name: "Penticton Indian Band", src: null }, // TODO-ASSET: PIB logo missing, renders text mark
     { name: "TribeX", src: "/images/logo-tribex.png" },
   ],
 };
