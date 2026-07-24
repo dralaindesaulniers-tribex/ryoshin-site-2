@@ -67,11 +67,6 @@ export default function Footer() {
                 ))}
               </p>
               <p>
-                <a href={contact.phoneHref} className="link-draw hover:text-paper transition-colors">
-                  {contact.phone}
-                </a>
-              </p>
-              <p>
                 <a
                   href={`mailto:${contact.email}`}
                   className="link-draw hover:text-paper transition-colors"

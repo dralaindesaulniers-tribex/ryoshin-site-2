@@ -52,14 +52,6 @@ export default function ContactPage() {
                 </dd>
               </div>
               <div>
-                <dt className="eyebrow text-shu">Phone</dt>
-                <dd className="mt-2">
-                  <a href={contact.phoneHref} className="link-draw text-ink/70 hover:text-ink">
-                    {contact.phone}
-                  </a>
-                </dd>
-              </div>
-              <div>
                 <dt className="eyebrow text-shu">Email</dt>
                 <dd className="mt-2">
                   <a href={`mailto:${contact.email}`} className="link-draw text-ink/70 hover:text-ink">

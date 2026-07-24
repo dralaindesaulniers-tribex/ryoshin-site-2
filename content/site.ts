@@ -14,10 +14,8 @@ export const brand = {
 
 export const contact = {
   address: ["242 - 1489 Marine Drive", "West Vancouver, BC V7T 1B8", "Canada"],
-  phone: "778-991-3747",
-  phoneHref: "tel:+17789913747",
-  // contact form hands off to WhatsApp (Ryan's critique, July 2026).
-  // number confirmed by Alain: same as the listed business phone.
+  // Dialable phone removed July 2026 (Ryan was getting spam calls). WhatsApp
+  // stays: it is a chat handoff, not a callable number, and Ryan's channel.
   whatsapp: "17789913747",
   email: "hello@ryoshin.ca",
   formRecipient: "ryan@ryoshin.ca",

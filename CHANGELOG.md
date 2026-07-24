@@ -2,6 +2,10 @@
 
 ## 2026-07-20
 
+- Contact: removed the dialable phone number sitewide (Ryan was getting spam
+  calls). Gone from the footer and the Contact page, and the tel: link and
+  digits are no longer in the shipped bundle. WhatsApp handoff stays: it is a
+  chat, not a callable number.
 - Partners: added Andre Parfeniuk (Prairie Ocean Media) to the wider roster,
   with headshot and a condensed bio in site voice.
 - Trusted By: removed the Penticton Indian Band text mark from the homepage
